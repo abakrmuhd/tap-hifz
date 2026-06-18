@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tap Hifz Reading Undo Options</title>
+  <style>
+    :root {
+      --bg: #f4f1e8;
+      --paper: #fffdf8;
+      --ink: #0f172a;
+      --muted: #647174;
+      --line: #ddd5c4;
+      --surface: #faf7ef;
+      --weak: #e9aaa3;
+      --build: #f1d37c;
+      --strong: #9ad6c2;
+      --mastered: #8fd0de;
+      --toast: #202a2d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(1180px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 3.1rem);
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 800px;
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .option {
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 40px rgba(29, 42, 45, 0.08);
+    }
+
+    .option-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .option-header h2 { font-size: 1.05rem; }
+
+    .option-header p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+
+    .phone {
+      position: relative;
+      min-height: 430px;
+      margin: 18px;
+      padding: 14px;
+      border: 1px solid #cfc6b6;
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 44px 1fr auto auto;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .icon-button {
+      display: inline-grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid #e3dac9;
+      border-radius: 999px;
+      background: #fffdf8;
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    .page-label {
+      justify-self: center;
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .mushaf {
+      direction: rtl;
+      min-height: 300px;
+      margin-top: 12px;
+      padding: 18px 14px;
+      border: 1px solid #e7dfd1;
+      border-radius: 8px;
+      background: #fffefb;
+      font-family: "Traditional Arabic", "Amiri", "Scheherazade New", serif;
+      font-size: 1.5rem;
+      line-height: 2.35;
+      text-align: justify;
+    }
+
+    .ayah {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.1rem;
+      height: 2.1rem;
+      margin: 0 0.12rem;
+      border: 1px solid #b85f59;
+      border-radius: 999px;
+      background: var(--weak);
+      color: #6b1d1a;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 900;
+      vertical-align: middle;
+    }
+
+    .ayah.build {
+      border-color: #a16207;
+      background: var(--build);
+      color: #5f3906;
+    }
+
+    .ayah.strong {
+      border-color: #177a5c;
+      background: var(--strong);
+      color: #135a45;
+    }
+
+    .transition {
+      display: inline-flex;
+      width: 1.65rem;
+      height: 0.72rem;
+      margin: 0 0.12rem;
+      border-radius: 999px;
+      background: var(--build);
+      opacity: 0.75;
+      vertical-align: middle;
+    }
+
+    .toast {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      left: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 48px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: var(--toast);
+      color: white;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.2);
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .toast button,
+    .undo-chip,
+    .floating-undo {
+      border: 0;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .toast button {
+      min-height: 36px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #fffdf8;
+      color: var(--ink);
+    }
+
+    .undo-chip {
+      position: absolute;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid #d8cfbf;
+      border-radius: 999px;
+      background: #fffdf8;
+      color: var(--ink);
+      box-shadow: 0 8px 22px rgba(29, 42, 45, 0.1);
+    }
+
+    .floating-undo {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      display: inline-grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      background: #fffdf8;
+      color: var(--ink);
+      border: 1px solid #d8cfbf;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+      font-size: 1.25rem;
+    }
+
+    .takeaway {
+      padding: 0 18px 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 980px) {
+      .options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Reading Screen Undo Options</h1>
+      <p class="subtitle">
+        The Reading screen already has Back on the left, Page Bookmark and Settings on the right.
+        These compare how undo can appear after a tap without adding a permanent bottom toolbar.
+      </p>
+    </header>
+
+    <div class="options">
+      <article class="option">
+        <div class="option-header">
+          <h2>A. Bottom Undo Snackbar</h2>
+          <p>Appears briefly after logging, then disappears. Standard and hard to miss.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar">
+            <span class="icon-button" aria-label="Back">‹</span>
+            <span class="page-label">Page 2</span>
+            <span class="icon-button" aria-label="Bookmark">□</span>
+            <span class="icon-button" aria-label="Settings">⚙</span>
+          </div>
+          <div class="mushaf">
+            الٓمٓ <span class="ayah">1</span>
+            <span class="transition"></span>
+            ذَٰلِكَ ٱلْكِتَـٰبُ لَا رَيْبَ فِيهِ هُدًى <span class="ayah build">2</span>
+            <span class="transition"></span>
+            لِّلْمُتَّقِينَ <span class="ayah strong">3</span>
+          </div>
+          <div class="toast"><span>Ayah 2 repetition added</span><button>Undo</button></div>
+        </div>
+        <p class="takeaway">Recommended: clear, temporary, accessible with aria-live, and does not permanently consume reading space.</p>
+      </article>
+
+      <article class="option">
+        <div class="option-header">
+          <h2>B. Top Undo Chip</h2>
+          <p>Appears near the page title, away from the bottom gesture area.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar">
+            <span class="icon-button" aria-label="Back">‹</span>
+            <span class="page-label">Page 2</span>
+            <span class="icon-button" aria-label="Bookmark">□</span>
+            <span class="icon-button" aria-label="Settings">⚙</span>
+          </div>
+          <button class="undo-chip">Undo ayah 2</button>
+          <div class="mushaf">
+            الٓمٓ <span class="ayah">1</span>
+            <span class="transition"></span>
+            ذَٰلِكَ ٱلْكِتَـٰبُ لَا رَيْبَ فِيهِ هُدًى <span class="ayah build">2</span>
+            <span class="transition"></span>
+            لِّلْمُتَّقِينَ <span class="ayah strong">3</span>
+          </div>
+        </div>
+        <p class="takeaway">Good for avoiding bottom overlap, but it can cover the first line of mushaf content on small screens.</p>
+      </article>
+
+      <article class="option">
+        <div class="option-header">
+          <h2>C. Floating Undo Button</h2>
+          <p>A temporary round button appears after logging.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar">
+            <span class="icon-button" aria-label="Back">‹</span>
+            <span class="page-label">Page 2</span>
+            <span class="icon-button" aria-label="Bookmark">□</span>
+            <span class="icon-button" aria-label="Settings">⚙</span>
+          </div>
+          <div class="mushaf">
+            الٓمٓ <span class="ayah">1</span>
+            <span class="transition"></span>
+            ذَٰلِكَ ٱلْكِتَـٰبُ لَا رَيْبَ فِيهِ هُدًى <span class="ayah build">2</span>
+            <span class="transition"></span>
+            لِّلْمُتَّقِينَ <span class="ayah strong">3</span>
+          </div>
+          <button class="floating-undo" aria-label="Undo last action">↶</button>
+        </div>
+        <p class="takeaway">Compact, but less self-explanatory and more likely to obscure text or be missed.</p>
+      </article>
+    </div>
+  </main>
+</body>
+</html>

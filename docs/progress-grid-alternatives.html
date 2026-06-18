@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tap Hifz Progress Grid Alternatives</title>
+  <style>
+    :root {
+      --bg: #f4f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2a2d;
+      --muted: #667477;
+      --line: #ddd5c4;
+      --weak: #e9aaa3;
+      --build: #f1d37c;
+      --strong: #9ad6c2;
+      --mastered: #8fd0de;
+      --empty: #e7dfd1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(1200px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 3.2rem);
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 800px;
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .option {
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 40px rgba(29, 42, 45, 0.08);
+    }
+
+    .option.wide {
+      grid-column: 1 / -1;
+    }
+
+    .option-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .option-header h2 { font-size: 1.05rem; }
+
+    .option-header p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+
+    .phone {
+      margin: 18px;
+      padding: 14px;
+      border: 1px solid #cfc6b6;
+      border-radius: 8px;
+      background: #faf7ef;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin: 14px 0;
+      padding: 4px;
+      background: #ece5d7;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .tabs span {
+      padding: 7px 5px;
+      border-radius: 6px;
+      color: var(--muted);
+    }
+
+    .tabs .active {
+      background: #fffdf8;
+      color: var(--ink);
+      box-shadow: 0 1px 3px rgba(29, 42, 45, 0.08);
+    }
+
+    .section-title {
+      margin: 12px 0 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .cell {
+      aspect-ratio: 1;
+      min-width: 0;
+      border-radius: 3px;
+      background: var(--empty);
+    }
+
+    .weak { background: var(--weak); }
+    .build { background: var(--build); }
+    .strong { background: var(--strong); }
+    .mastered { background: var(--mastered); }
+
+    .juz-list,
+    .range-list,
+    .card-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .juz-row,
+    .range-row,
+    .juz-card {
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+    }
+
+    .juz-row summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px;
+      cursor: pointer;
+      list-style: none;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .juz-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .juz-pill {
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--build);
+      color: var(--ink);
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .juz-title small {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .juz-row summary::-webkit-details-marker { display: none; }
+
+    .juz-pages {
+      direction: rtl;
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 4px;
+      padding: 0 10px 10px;
+    }
+
+    .page-cell {
+      position: relative;
+    }
+
+    .page-cell::after {
+      content: attr(data-page);
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(29, 42, 45, 0.68);
+      font-size: 0.5rem;
+      font-weight: 800;
+    }
+
+    .sparkline {
+      direction: rtl;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 2px;
+      width: 86px;
+    }
+
+    .sparkline .cell {
+      border-radius: 2px;
+    }
+
+    .range-row {
+      padding: 10px;
+    }
+
+    .range-head,
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .range-grid {
+      direction: rtl;
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      gap: 3px;
+    }
+
+    .juz-card {
+      padding: 12px;
+    }
+
+    .juz-card .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .metric {
+      padding: 9px;
+      border-radius: 8px;
+      background: #f4efe2;
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.25;
+    }
+
+    .metric b {
+      display: block;
+      color: var(--ink);
+      font-size: 1.05rem;
+    }
+
+    .takeaway {
+      padding: 0 18px 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .mini-map {
+      direction: rtl;
+      display: grid;
+      grid-template-columns: repeat(26, 1fr);
+      gap: 2px;
+      padding: 10px;
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+    }
+
+    .mini-map .cell {
+      border-radius: 2px;
+    }
+
+    .zoom-panel {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+    }
+
+    .zoom-grid {
+      direction: rtl;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .priority-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .priority-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+      font-size: 0.84rem;
+    }
+
+    .rank {
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--weak);
+      font-size: 0.74rem;
+      font-weight: 900;
+    }
+
+    .go {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #e9e1d2;
+      color: var(--ink);
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .search-box {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px 12px;
+      border: 1px solid #d8cebd;
+      border-radius: 8px;
+      background: #fffefb;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.86rem;
+    }
+
+    .quick-ranges {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .range-button {
+      padding: 11px 10px;
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .range-button small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .hybrid-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .juz-heatmap {
+      direction: rtl;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 5px;
+      padding: 0;
+    }
+
+    .juz-heat {
+      display: grid;
+      place-items: center;
+      min-height: 30px;
+      border: 0;
+      border-radius: 999px;
+      color: rgba(29, 42, 45, 0.78);
+      font-size: 0.72rem;
+      font-weight: 900;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .juz-scroll {
+      max-height: none;
+      overflow: visible;
+      padding-right: 0;
+      scrollbar-width: thin;
+    }
+
+    .juz-row.compact:not(.active-juz) {
+      display: none;
+    }
+
+    .option.wide .juz-row.compact {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .combined-juz-panel {
+      padding: 8px;
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+    }
+
+    .juz-divider {
+      height: 1px;
+      margin: 10px 0;
+      background: #e4dccd;
+    }
+
+    .juz-row.compact summary {
+      padding: 0 0 7px;
+      min-height: 34px;
+    }
+
+    .juz-row.compact .juz-pages {
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      padding: 0;
+    }
+
+    .juz-row.compact .page-cell::after {
+      font-size: 0.48rem;
+    }
+
+    .juz-row.compact .cell {
+      border-radius: 3px;
+    }
+
+    .status-pills {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex: 0 0 auto;
+    }
+
+    .count-pill {
+      display: inline-grid;
+      place-items: center;
+      min-width: 22px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 999px;
+      color: var(--ink);
+      font-size: 0.68rem;
+      font-weight: 900;
+    }
+
+    .count-pill.weak {
+      background: var(--weak);
+    }
+
+    .count-pill.strong {
+      background: var(--mastered);
+    }
+
+    @media (max-width: 980px) {
+      .options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Progress Grid Alternatives</h1>
+      <p class="subtitle">
+        These solve the cramped 604-page grid problem while keeping the app page-first. Page color is still based on the weakest individual ayah.
+      </p>
+    </header>
+
+    <div class="options">
+      <article class="option">
+        <div class="option-header">
+          <h2>A. Juz-Grouped Grid</h2>
+          <p>Thirty juz rows. Expand one juz to see its pages clearly.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <div class="section-title">By juz</div>
+          <div class="juz-list">
+            <details class="juz-row" open>
+              <summary><span class="juz-title"><span class="juz-pill build">1</span><span>Juz 1 <small>pages 1-21</small></span></span><span class="sparkline"><i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell mastered"></i><i class="cell weak"></i><i class="cell"></i><i class="cell strong"></i><i class="cell build"></i><i class="cell"></i></span></summary>
+              <div class="juz-pages">
+                <i class="cell page-cell weak" data-page="1"></i><i class="cell page-cell build" data-page="2"></i><i class="cell page-cell build" data-page="3"></i><i class="cell page-cell strong" data-page="4"></i><i class="cell page-cell weak" data-page="5"></i><i class="cell page-cell" data-page="6"></i><i class="cell page-cell strong" data-page="7"></i><i class="cell page-cell mastered" data-page="8"></i><i class="cell page-cell build" data-page="9"></i><i class="cell page-cell" data-page="10"></i><i class="cell page-cell strong" data-page="11"></i>
+                <i class="cell page-cell build" data-page="12"></i><i class="cell page-cell weak" data-page="13"></i><i class="cell page-cell" data-page="14"></i><i class="cell page-cell strong" data-page="15"></i><i class="cell page-cell build" data-page="16"></i><i class="cell page-cell" data-page="17"></i><i class="cell page-cell" data-page="18"></i><i class="cell page-cell strong" data-page="19"></i><i class="cell page-cell build" data-page="20"></i><i class="cell page-cell" data-page="21"></i>
+              </div>
+            </details>
+            <details class="juz-row">
+              <summary><span class="juz-title"><span class="juz-pill weak">2</span><span>Juz 2 <small>pages 22-41</small></span></span><span class="sparkline"><i class="cell"></i><i class="cell"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell mastered"></i><i class="cell strong"></i></span></summary>
+            </details>
+            <details class="juz-row">
+              <summary><span class="juz-title"><span class="juz-pill strong">3</span><span>Juz 3 <small>pages 42-61</small></span></span><span class="sparkline"><i class="cell strong"></i><i class="cell build"></i><i class="cell"></i><i class="cell"></i><i class="cell weak"></i><i class="cell build"></i><i class="cell"></i><i class="cell strong"></i><i class="cell mastered"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i></span></summary>
+            </details>
+          </div>
+        </div>
+        <p class="takeaway">Recommended: Quran-native grouping, readable page cells, still fast to navigate.</p>
+      </article>
+
+      <article class="option">
+        <div class="option-header">
+          <h2>B. Page Range Strips</h2>
+          <p>Show fixed page ranges, each with 20 visible page cells.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <div class="section-title">By page range</div>
+          <div class="range-list">
+            <div class="range-row">
+              <div class="range-head"><span>Pages 1-20</span><small>4 weak</small></div>
+              <div class="range-grid"><i class="cell weak"></i><i class="cell build"></i><i class="cell"></i><i class="cell strong"></i><i class="cell weak"></i><i class="cell"></i><i class="cell strong"></i><i class="cell mastered"></i><i class="cell build"></i><i class="cell"></i><i class="cell strong"></i><i class="cell weak"></i><i class="cell build"></i><i class="cell"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell build"></i><i class="cell weak"></i><i class="cell"></i></div>
+            </div>
+            <div class="range-row">
+              <div class="range-head"><span>Pages 21-40</span><small>1 weak</small></div>
+              <div class="range-grid"><i class="cell"></i><i class="cell"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell mastered"></i><i class="cell strong"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell"></i><i class="cell strong"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i></div>
+            </div>
+          </div>
+        </div>
+        <p class="takeaway">Most regular and predictable, but less Quran-native than juz grouping.</p>
+      </article>
+
+      <article class="option">
+        <div class="option-header">
+          <h2>C. Juz Cards</h2>
+          <p>Show summaries first. Tap a juz card to open its pages.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <div class="section-title">Juz summary</div>
+          <div class="card-list">
+            <div class="juz-card">
+              <div class="card-head"><span>Juz 1</span><small>pages 1-21</small></div>
+              <div class="sparkline"><i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell mastered"></i><i class="cell weak"></i><i class="cell"></i><i class="cell strong"></i><i class="cell build"></i><i class="cell"></i></div>
+              <div class="stats"><div class="metric"><b>4</b>weak pages</div><div class="metric"><b>11</b>strong pages</div></div>
+            </div>
+            <div class="juz-card">
+              <div class="card-head"><span>Juz 2</span><small>pages 22-41</small></div>
+              <div class="sparkline"><i class="cell"></i><i class="cell"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell mastered"></i><i class="cell strong"></i></div>
+              <div class="stats"><div class="metric"><b>1</b>weak page</div><div class="metric"><b>8</b>strong pages</div></div>
+            </div>
+          </div>
+        </div>
+        <p class="takeaway">Cleanest at a glance, but requires another tap to reach exact pages.</p>
+      </article>
+
+      <article class="option">
+        <div class="option-header">
+          <h2>D. Mini Map + Zoom</h2>
+          <p>Keep all 604 pages visible, then zoom into a selected neighborhood.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <div class="section-title">Whole mushaf</div>
+          <div class="mini-map">
+            <i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell weak"></i><i class="cell"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell mastered"></i><i class="cell"></i><i class="cell build"></i><i class="cell weak"></i><i class="cell"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell build"></i><i class="cell weak"></i><i class="cell"></i><i class="cell strong"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell mastered"></i><i class="cell"></i>
+            <i class="cell"></i><i class="cell weak"></i><i class="cell build"></i><i class="cell"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell mastered"></i><i class="cell build"></i><i class="cell"></i><i class="cell weak"></i><i class="cell"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell strong"></i><i class="cell weak"></i><i class="cell"></i><i class="cell"></i>
+            <i class="cell strong"></i><i class="cell"></i><i class="cell build"></i><i class="cell weak"></i><i class="cell"></i><i class="cell"></i><i class="cell strong"></i><i class="cell mastered"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell weak"></i><i class="cell"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell"></i><i class="cell strong"></i><i class="cell weak"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell"></i><i class="cell strong"></i>
+          </div>
+          <div class="zoom-panel">
+            <div class="range-head"><span>Zoom: pages 1-14</span><small>tap page</small></div>
+            <div class="zoom-grid">
+              <i class="cell page-cell weak" data-page="1"></i><i class="cell page-cell build" data-page="2"></i><i class="cell page-cell strong" data-page="3"></i><i class="cell page-cell" data-page="4"></i><i class="cell page-cell weak" data-page="5"></i><i class="cell page-cell" data-page="6"></i><i class="cell page-cell build" data-page="7"></i>
+              <i class="cell page-cell strong" data-page="8"></i><i class="cell page-cell mastered" data-page="9"></i><i class="cell page-cell" data-page="10"></i><i class="cell page-cell build" data-page="11"></i><i class="cell page-cell weak" data-page="12"></i><i class="cell page-cell" data-page="13"></i><i class="cell page-cell strong" data-page="14"></i>
+            </div>
+          </div>
+        </div>
+        <p class="takeaway">Best for preserving the full-mushaf overview while making selected pages readable.</p>
+      </article>
+
+      <article class="option">
+        <div class="option-header">
+          <h2>E. Weakest Pages First</h2>
+          <p>Prioritize action: show the pages with the weakest ayahs before any grid.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <div class="section-title">Practice next</div>
+          <div class="priority-list">
+            <div class="priority-row"><span class="rank">1</span><span><b>Page 12</b><br><small>Weakest ayah: 2:17</small></span><span class="go">Open</span></div>
+            <div class="priority-row"><span class="rank">2</span><span><b>Page 48</b><br><small>Weakest ayah: 3:22</small></span><span class="go">Open</span></div>
+            <div class="priority-row"><span class="rank">3</span><span><b>Page 112</b><br><small>Weakest ayah: 5:41</small></span><span class="go">Open</span></div>
+            <div class="priority-row"><span class="rank">4</span><span><b>Page 301</b><br><small>Weakest ayah: 18:66</small></span><span class="go">Open</span></div>
+          </div>
+          <div class="section-title">Mini context</div>
+          <div class="sparkline" style="width:100%;grid-template-columns:repeat(30,1fr)">
+            <i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell mastered"></i><i class="cell weak"></i><i class="cell"></i><i class="cell strong"></i><i class="cell build"></i><i class="cell"></i><i class="cell"></i><i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell mastered"></i><i class="cell"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell weak"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell weak"></i>
+          </div>
+        </div>
+        <p class="takeaway">Best if Progress should behave like a coach: start with what needs work.</p>
+      </article>
+
+      <article class="option">
+        <div class="option-header">
+          <h2>F. Search + Quick Ranges</h2>
+          <p>Let users jump by page, surah, juz, or saved range instead of scanning everything.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <input class="search-box" value="Search page, surah, or juz" readonly>
+          <div class="section-title">Quick ranges</div>
+          <div class="quick-ranges">
+            <div class="range-button">Juz 1<small>pages 1-21</small></div>
+            <div class="range-button">Juz 30<small>pages 582-604</small></div>
+            <div class="range-button">Recent<small>5 pages</small></div>
+            <div class="range-button">Weak<small>18 pages</small></div>
+          </div>
+          <div class="section-title">Selected range</div>
+          <div class="range-row">
+            <div class="range-head"><span>Juz 30</span><small>582-604</small></div>
+            <div class="range-grid"><i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell mastered"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell strong"></i><i class="cell weak"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell strong"></i><i class="cell"></i><i class="cell mastered"></i></div>
+          </div>
+        </div>
+        <p class="takeaway">Best for fast navigation, but it makes progress feel less immediately visible.</p>
+      </article>
+
+      <article class="option wide">
+        <div class="option-header">
+          <h2>G. Whole Mushaf Heatmap + Scrollable Juz Grid</h2>
+          <p>Top: 30 colored juz pills for the whole mushaf. Below: readable juz-grouped page grids, with only 3-4 juz visible at once through vertical scroll.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <div class="hybrid-layout">
+            <div>
+              <div class="section-title">Whole mushaf by juz</div>
+              <div class="combined-juz-panel">
+                <div class="juz-heatmap">
+                  <button class="juz-heat weak" data-scroll-juz="1">1</button><button class="juz-heat build" data-scroll-juz="2">2</button><button class="juz-heat strong" data-scroll-juz="3">3</button><button class="juz-heat" data-scroll-juz="4">4</button><button class="juz-heat mastered" data-scroll-juz="5">5</button>
+                  <button class="juz-heat build" data-scroll-juz="6">6</button><button class="juz-heat weak" data-scroll-juz="7">7</button><button class="juz-heat strong" data-scroll-juz="8">8</button><button class="juz-heat" data-scroll-juz="9">9</button><button class="juz-heat build" data-scroll-juz="10">10</button>
+                  <button class="juz-heat strong" data-scroll-juz="11">11</button><button class="juz-heat mastered" data-scroll-juz="12">12</button><button class="juz-heat" data-scroll-juz="13">13</button><button class="juz-heat weak" data-scroll-juz="14">14</button><button class="juz-heat build" data-scroll-juz="15">15</button>
+                  <button class="juz-heat" data-scroll-juz="16">16</button><button class="juz-heat strong" data-scroll-juz="17">17</button><button class="juz-heat build" data-scroll-juz="18">18</button><button class="juz-heat weak" data-scroll-juz="19">19</button><button class="juz-heat" data-scroll-juz="20">20</button>
+                  <button class="juz-heat strong" data-scroll-juz="21">21</button><button class="juz-heat" data-scroll-juz="22">22</button><button class="juz-heat mastered" data-scroll-juz="23">23</button><button class="juz-heat build" data-scroll-juz="24">24</button><button class="juz-heat" data-scroll-juz="25">25</button>
+                  <button class="juz-heat weak" data-scroll-juz="26">26</button><button class="juz-heat build" data-scroll-juz="27">27</button><button class="juz-heat strong" data-scroll-juz="28">28</button><button class="juz-heat" data-scroll-juz="29">29</button><button class="juz-heat weak" data-scroll-juz="30">30</button>
+                </div>
+                <div class="juz-divider"></div>
+                <div class="juz-scroll">
+                  <div class="juz-list">
+                  <details class="juz-row compact" id="g-juz-1" data-juz="1" open>
+                    <summary><span class="juz-title"><span>Juz 1</span></span><span class="status-pills"><span class="count-pill weak">4</span><span class="count-pill strong">6</span></span></summary>
+                    <div class="juz-pages">
+                      <i class="cell page-cell weak" data-page="1"></i><i class="cell page-cell build" data-page="2"></i><i class="cell page-cell build" data-page="3"></i><i class="cell page-cell strong" data-page="4"></i><i class="cell page-cell weak" data-page="5"></i><i class="cell page-cell" data-page="6"></i><i class="cell page-cell strong" data-page="7"></i><i class="cell page-cell mastered" data-page="8"></i><i class="cell page-cell build" data-page="9"></i><i class="cell page-cell" data-page="10"></i><i class="cell page-cell strong" data-page="11"></i><i class="cell page-cell build" data-page="12"></i>
+                      <i class="cell page-cell weak" data-page="13"></i><i class="cell page-cell" data-page="14"></i><i class="cell page-cell strong" data-page="15"></i><i class="cell page-cell build" data-page="16"></i><i class="cell page-cell" data-page="17"></i><i class="cell page-cell" data-page="18"></i><i class="cell page-cell strong" data-page="19"></i><i class="cell page-cell build" data-page="20"></i><i class="cell page-cell" data-page="21"></i>
+                    </div>
+                  </details>
+                  <details class="juz-row compact" id="g-juz-2" data-juz="2" open>
+                    <summary><span class="juz-title"><span>Juz 2</span></span><span class="status-pills"><span class="count-pill weak">2</span><span class="count-pill strong">8</span></span></summary>
+                    <div class="juz-pages">
+                      <i class="cell page-cell" data-page="22"></i><i class="cell page-cell build" data-page="23"></i><i class="cell page-cell strong" data-page="24"></i><i class="cell page-cell" data-page="25"></i><i class="cell page-cell weak" data-page="26"></i><i class="cell page-cell build" data-page="27"></i><i class="cell page-cell strong" data-page="28"></i><i class="cell page-cell" data-page="29"></i><i class="cell page-cell mastered" data-page="30"></i><i class="cell page-cell strong" data-page="31"></i><i class="cell page-cell" data-page="32"></i><i class="cell page-cell build" data-page="33"></i>
+                      <i class="cell page-cell" data-page="34"></i><i class="cell page-cell weak" data-page="35"></i><i class="cell page-cell" data-page="36"></i><i class="cell page-cell strong" data-page="37"></i><i class="cell page-cell build" data-page="38"></i><i class="cell page-cell" data-page="39"></i><i class="cell page-cell strong" data-page="40"></i><i class="cell page-cell" data-page="41"></i>
+                    </div>
+                  </details>
+                  <details class="juz-row compact" id="g-juz-3" data-juz="3" open>
+                    <summary><span class="juz-title"><span>Juz 3</span></span><span class="status-pills"><span class="count-pill weak">1</span><span class="count-pill strong">9</span></span></summary>
+                    <div class="juz-pages">
+                      <i class="cell page-cell strong" data-page="42"></i><i class="cell page-cell build" data-page="43"></i><i class="cell page-cell" data-page="44"></i><i class="cell page-cell weak" data-page="45"></i><i class="cell page-cell build" data-page="46"></i><i class="cell page-cell" data-page="47"></i><i class="cell page-cell strong" data-page="48"></i><i class="cell page-cell mastered" data-page="49"></i><i class="cell page-cell" data-page="50"></i><i class="cell page-cell" data-page="51"></i><i class="cell page-cell build" data-page="52"></i><i class="cell page-cell strong" data-page="53"></i>
+                      <i class="cell page-cell" data-page="54"></i><i class="cell page-cell weak" data-page="55"></i><i class="cell page-cell build" data-page="56"></i><i class="cell page-cell" data-page="57"></i><i class="cell page-cell strong" data-page="58"></i><i class="cell page-cell" data-page="59"></i><i class="cell page-cell" data-page="60"></i><i class="cell page-cell build" data-page="61"></i>
+                    </div>
+                  </details>
+                  <details class="juz-row compact" id="g-juz-4" data-juz="4">
+                    <summary><span class="juz-title"><span>Juz 4</span></span><span class="status-pills"><span class="count-pill weak">3</span><span class="count-pill strong">5</span></span></summary>
+                  </details>
+                  <details class="juz-row compact" id="g-juz-5" data-juz="5">
+                    <summary><span class="juz-title"><span>Juz 5</span></span><span class="status-pills"><span class="count-pill weak">0</span><span class="count-pill strong">11</span></span></summary>
+                  </details>
+                  <details class="juz-row compact" id="g-juz-6" data-juz="6">
+                    <summary><span class="juz-title"><span>Juz 6</span></span><span class="status-pills"><span class="count-pill weak">2</span><span class="count-pill strong">7</span></span></summary>
+                  </details>
+                  <details class="juz-row compact" id="g-juz-7" data-juz="7">
+                    <summary><span class="juz-title"><span>Juz 7</span></span><span class="status-pills"><span class="count-pill weak">6</span><span class="count-pill strong">4</span></span></summary>
+                    <div class="juz-pages">
+                      <i class="cell page-cell weak" data-page="122"></i><i class="cell page-cell build" data-page="123"></i><i class="cell page-cell weak" data-page="124"></i><i class="cell page-cell strong" data-page="125"></i><i class="cell page-cell" data-page="126"></i>
+                      <i class="cell page-cell weak" data-page="127"></i><i class="cell page-cell build" data-page="128"></i><i class="cell page-cell" data-page="129"></i><i class="cell page-cell strong" data-page="130"></i><i class="cell page-cell weak" data-page="131"></i>
+                      <i class="cell page-cell build" data-page="132"></i><i class="cell page-cell" data-page="133"></i><i class="cell page-cell strong" data-page="134"></i><i class="cell page-cell weak" data-page="135"></i><i class="cell page-cell" data-page="136"></i>
+                      <i class="cell page-cell build" data-page="137"></i><i class="cell page-cell weak" data-page="138"></i><i class="cell page-cell" data-page="139"></i><i class="cell page-cell strong" data-page="140"></i><i class="cell page-cell" data-page="141"></i>
+                    </div>
+                  </details>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="takeaway">Best hybrid: whole-mushaf orientation stays visible, while the scroll area gives readable page-level targets.</p>
+      </article>
+    </div>
+  </main>
+</body>
+<script>
+  const juzStarts = [1, 22, 42, 62, 82, 102, 121, 142, 162, 182, 202, 222, 242, 262, 282, 302, 322, 342, 362, 382, 402, 422, 442, 462, 482, 502, 522, 542, 562, 582];
+  const juzStatus = ["weak", "build", "strong", "", "mastered", "build", "weak", "strong", "", "build", "strong", "mastered", "", "weak", "build", "", "strong", "build", "weak", "", "strong", "", "mastered", "build", "", "weak", "build", "strong", "", "weak"];
+  const statusForPageInJuz = (juz, page) => {
+    if (page % 11 === 0 || page === juzStarts[juz - 1]) return "weak";
+    if (page % 7 === 0 || page % 13 === 0) return "build";
+    if (page % 5 === 0 || page % 17 === 0) return "strong";
+    if (page % 19 === 0) return "mastered";
+    return "";
+  };
+
+  const makeCell = (page, status) => {
+    const cell = document.createElement("i");
+    cell.className = `cell page-cell ${status}`.trim();
+    cell.dataset.page = page;
+    return cell;
+  };
+
+  const makeGeneratedJuz = (juz) => {
+    const start = juzStarts[juz - 1];
+    const end = juz === 30 ? 604 : juzStarts[juz] - 1;
+    const details = document.createElement("details");
+    details.className = "juz-row compact";
+    details.id = `g-juz-${juz}`;
+    details.dataset.juz = juz;
+
+    const pageStatuses = [];
+    for (let page = start; page <= end; page += 1) {
+      pageStatuses.push(statusForPageInJuz(juz, page));
+    }
+
+    const weakCount = pageStatuses.filter((status) => status === "weak").length;
+    const strongCount = pageStatuses.filter((status) => status === "strong" || status === "mastered").length;
+    const summary = document.createElement("summary");
+    summary.innerHTML = `
+      <span class="juz-title">
+        <span>Juz ${juz}</span>
+      </span>
+      <span class="status-pills">
+        <span class="count-pill weak">${weakCount}</span>
+        <span class="count-pill strong">${strongCount}</span>
+      </span>
+    `;
+
+    const pages = document.createElement("div");
+    pages.className = "juz-pages";
+    for (let page = start; page <= end; page += 1) {
+      pages.appendChild(makeCell(page, statusForPageInJuz(juz, page)));
+    }
+
+    details.append(summary, pages);
+    return details;
+  };
+
+  const optionGList = document.querySelector(".option.wide .juz-list");
+  for (let juz = 8; juz <= 30; juz += 1) {
+    optionGList.appendChild(makeGeneratedJuz(juz));
+  }
+
+  const setActiveJuz = (juzNumber) => {
+    document.querySelectorAll(".option.wide .juz-row.compact").forEach((row) => {
+      const isActive = row.dataset.juz === String(juzNumber);
+      row.classList.toggle("active-juz", isActive);
+      row.open = isActive;
+    });
+  };
+
+  setActiveJuz(1);
+
+  document.querySelectorAll("[data-scroll-juz]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const juzNumber = button.getAttribute("data-scroll-juz");
+      setActiveJuz(juzNumber);
+    });
+  });
+</script>
+</html>

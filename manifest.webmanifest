@@ -1,0 +1,17 @@
+{
+  "name": "Tap Hifz",
+  "short_name": "Tap Hifz",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#16161d",
+  "theme_color": "#16161d",
+  "description": "Local-first Quran memorization tracker built around the 604-page mushaf.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

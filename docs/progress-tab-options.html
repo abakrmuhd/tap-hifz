@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tap Hifz Progress Tab Options</title>
+  <style>
+    :root {
+      --bg: #f4f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2a2d;
+      --muted: #667477;
+      --line: #ddd5c4;
+      --weak: #e9aaa3;
+      --build: #f1d37c;
+      --strong: #9ad6c2;
+      --mastered: #8fd0de;
+      --empty: #e7dfd1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(1180px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 3.2rem);
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 780px;
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .option {
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 40px rgba(29, 42, 45, 0.08);
+    }
+
+    .option-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .option-header h2 { font-size: 1.05rem; }
+
+    .option-header p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+
+    .phone {
+      margin: 18px;
+      padding: 14px;
+      border: 1px solid #cfc6b6;
+      border-radius: 8px;
+      background: #faf7ef;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin: 14px 0;
+      padding: 4px;
+      background: #ece5d7;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .tabs span {
+      padding: 7px 5px;
+      border-radius: 6px;
+      color: var(--muted);
+    }
+
+    .tabs .active {
+      background: #fffdf8;
+      color: var(--ink);
+      box-shadow: 0 1px 3px rgba(29, 42, 45, 0.08);
+    }
+
+    .section-title {
+      margin: 12px 0 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: repeat(26, 1fr);
+      gap: 3px;
+      padding: 10px;
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+    }
+
+    .cell {
+      aspect-ratio: 1;
+      border-radius: 3px;
+      background: var(--empty);
+      min-width: 0;
+    }
+
+    .cell[data-page] {
+      position: relative;
+    }
+
+    .cell[data-page]::after {
+      content: attr(data-page);
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(29, 42, 45, 0.64);
+      font-size: 0.42rem;
+      font-weight: 800;
+    }
+
+    .page-grid.exact {
+      direction: rtl;
+      grid-template-columns: repeat(22, 1fr);
+      gap: 2px;
+      max-height: 214px;
+      overflow: auto;
+      scrollbar-width: thin;
+    }
+
+    .page-grid.exact .cell {
+      min-height: 9px;
+      border-radius: 2px;
+    }
+
+    .page-grid.exact .cell::after {
+      content: none;
+    }
+
+    .grid-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.35;
+    }
+
+    .weak { background: var(--weak); }
+    .build { background: var(--build); }
+    .strong { background: var(--strong); }
+    .mastered { background: var(--mastered); }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .metric {
+      padding: 12px;
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.25;
+    }
+
+    .weak-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+      font-size: 0.86rem;
+    }
+
+    .row small {
+      color: var(--muted);
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: var(--weak);
+      border: 1px solid #b85f59;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid #e4dccd;
+      border-radius: 8px;
+      background: #fffefb;
+    }
+
+    .day {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      background: var(--empty);
+    }
+
+    .takeaway {
+      padding: 0 18px 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 980px) {
+      .options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Progress Tab MVP Options</h1>
+      <p class="subtitle">
+        These show different priorities for the Home screen Progress tab. Pick the one that best answers:
+        “What should I practice next?”
+      </p>
+    </header>
+
+    <div class="options">
+      <article class="option">
+        <div class="option-header">
+          <h2>A. Page Grid First</h2>
+          <p>A 604-page overview colored by page strength, with weak items below.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <div class="section-title">604-page overview</div>
+          <div class="page-grid exact" id="exactPageGrid"></div>
+          <p class="grid-note">604 RTL cells. Each page color comes from the weakest individual ayah on that page.</p>
+          <div class="section-title">Needs practice</div>
+          <div class="weak-list">
+            <div class="row"><span><b>Page 12</b><br><small>3 weak transitions</small></span><i class="badge"></i></div>
+            <div class="row"><span><b>Page 48</b><br><small>2 weak ayahs</small></span><i class="badge"></i></div>
+          </div>
+        </div>
+        <p class="takeaway">Best for broad mushaf visibility and quick page selection.</p>
+      </article>
+
+      <article class="option">
+        <div class="option-header">
+          <h2>B. Today First</h2>
+          <p>Shows daily practice momentum before deeper memorization status.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <div class="section-title">Today</div>
+          <div class="summary">
+            <div class="metric"><strong>42</strong><span>ayah reps</span></div>
+            <div class="metric"><strong>18</strong><span>transition reps</span></div>
+            <div class="metric"><strong>5</strong><span>pages touched</span></div>
+            <div class="metric"><strong>12m</strong><span>practice time</span></div>
+          </div>
+          <div class="section-title">Recent days</div>
+          <div class="calendar">
+            <i class="day build"></i><i class="day strong"></i><i class="day"></i><i class="day weak"></i><i class="day mastered"></i><i class="day strong"></i><i class="day build"></i>
+            <i class="day"></i><i class="day build"></i><i class="day strong"></i><i class="day strong"></i><i class="day"></i><i class="day weak"></i><i class="day build"></i>
+          </div>
+        </div>
+        <p class="takeaway">Best if motivation, habit, and daily accountability are the main need.</p>
+      </article>
+
+      <article class="option">
+        <div class="option-header">
+          <h2>C. Weak List First</h2>
+          <p>Immediately surfaces the weakest ayahs and page-local transitions.</p>
+        </div>
+        <div class="phone">
+          <div class="topbar"><span>Tap Hifz</span><span>Settings</span></div>
+          <div class="tabs"><span class="active">Progress</span><span>Surahs</span><span>Bookmarks</span></div>
+          <div class="section-title">Practice next</div>
+          <div class="weak-list">
+            <div class="row"><span><b>Page 2, Ayah 1</b><br><small>Individual ayah: weak</small></span><i class="badge"></i></div>
+            <div class="row"><span><b>Page 2, 1 -> 2</b><br><small>Transition: weak</small></span><i class="badge"></i></div>
+            <div class="row"><span><b>Page 6, Ayah 17</b><br><small>Individual ayah: weak</small></span><i class="badge"></i></div>
+            <div class="row"><span><b>Page 9, 3 -> 4</b><br><small>Transition: weak</small></span><i class="badge"></i></div>
+          </div>
+          <div class="section-title">Page context</div>
+          <div class="page-grid">
+            <i class="cell weak"></i><i class="cell build"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell weak"></i><i class="cell"></i><i class="cell build"></i><i class="cell weak"></i><i class="cell strong"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell build"></i><i class="cell"></i><i class="cell"></i><i class="cell"></i><i class="cell strong"></i>
+          </div>
+        </div>
+        <p class="takeaway">Best for a direct “tell me what needs work” Progress tab.</p>
+      </article>
+    </div>
+  </main>
+</body>
+<script>
+  const grid = document.getElementById("exactPageGrid");
+  const statusForPage = (page) => {
+    if (page % 53 === 0 || page % 47 === 0 || page === 2 || page === 12) return "weak";
+    if (page % 17 === 0 || page % 19 === 0 || page < 8) return "build";
+    if (page % 11 === 0 || page % 13 === 0 || page % 29 === 0) return "strong";
+    if (page % 31 === 0 || page % 37 === 0) return "mastered";
+    return "";
+  };
+
+  for (let page = 1; page <= 604; page += 1) {
+    const cell = document.createElement("i");
+    cell.className = `cell ${statusForPage(page)}`.trim();
+    cell.title = `Page ${page}`;
+    cell.setAttribute("aria-label", `Page ${page}`);
+    grid.appendChild(cell);
+  }
+</script>
+</html>
