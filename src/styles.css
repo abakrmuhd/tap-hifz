@@ -827,9 +827,7 @@ small {
 }
 
 .detail-head-actions,
-.detail-metric-value-line,
-.detail-block-head,
-.detail-transition-head {
+.detail-metric-value-line {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -946,7 +944,7 @@ small {
   line-height: 1.45;
 }
 
-.detail-transition-row.empty {
+.detail-transition-row-empty {
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto;
   background:
@@ -954,7 +952,7 @@ small {
     color-mix(in srgb, var(--surface) 82%, var(--empty) 18%);
 }
 
-.detail-transition-row.empty .detail-transition-copy {
+.detail-transition-row-empty .detail-transition-copy {
   gap: 6px;
 }
 

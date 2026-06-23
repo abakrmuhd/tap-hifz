@@ -528,7 +528,7 @@ function renderDetails() {
       </div>
     `
     : `
-      <div class="detail-transition-row empty">
+      <div class="detail-transition-row detail-transition-row-empty">
         <div class="detail-transition-copy">
           <div class="detail-metric-label">${detail.transition.label}</div>
           <p class="detail-empty-copy">${detail.transition.message}</p>
