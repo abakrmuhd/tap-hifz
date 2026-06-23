@@ -1,5 +1,5 @@
 const app = document.querySelector("#app");
-const STARTUP_ASSET_VERSION = "2026-06-22-narrow-font-bump-2";
+const STARTUP_ASSET_VERSION = "2026-06-24-thick-transition-arc";
 const LOCALHOST_HOSTNAMES = new Set(["localhost", "127.0.0.1", "::1"]);
 
 function escapeHtml(text) {

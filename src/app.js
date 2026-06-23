@@ -83,6 +83,7 @@ let settingsOpen = false;
 let review = null;
 let swipeStart = null;
 let suppressClickUntil = 0;
+let lastPointerAyahTap = { key: null, until: 0 };
 let pageNavigationInFlight = false;
 let trackState = {
   direction: null,
@@ -106,7 +107,7 @@ const icons = {
   settings: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M19 14.5a1.8 1.8 0 0 0 .4 2l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.8 1.8 0 0 0-2-.4 1.8 1.8 0 0 0-1.1 1.7V21a2 2 0 1 1-4 0v-.4a1.8 1.8 0 0 0-1.1-1.7 1.8 1.8 0 0 0-2 .4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.8 1.8 0 0 0 .4-2 1.8 1.8 0 0 0-1.7-1.1H3a2 2 0 1 1 0-4h.4a1.8 1.8 0 0 0 1.7-1.1 1.8 1.8 0 0 0-.4-2l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.8 1.8 0 0 0 2 .4 1.8 1.8 0 0 0 1.1-1.7V3a2 2 0 1 1 4 0v.4a1.8 1.8 0 0 0 1.1 1.7 1.8 1.8 0 0 0 2-.4l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.8 1.8 0 0 0-.4 2 1.8 1.8 0 0 0 1.7 1.1H21a2 2 0 1 1 0 4h-.4a1.8 1.8 0 0 0-1.6 1Z"/></svg>`,
   star: `<svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg>`,
   search: `<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`,
-  undo: `<svg viewBox="0 0 24 24"><path d="M9 7H4v5"/><path d="M20 17a7 7 0 0 0-11.9-5L4 16"/></svg>`,
+  undo: `<svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>`,
   close: `<svg viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg>`,
   bookmark: `<svg viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4V4Z"/></svg>`,
   trash: `<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>`,
@@ -447,10 +448,13 @@ function renderWord(word, activeTarget, options = {}) {
     transitionActive ? "transition-target" : "",
     ayahActive ? "target" : ""
   ].filter(Boolean).join(" ");
+  const transitionArcStyle = ringState.hasTransitionRing
+    ? ` style="--transition-arc: ${ringState.transitionArcDegrees}deg"`
+    : "";
   if (options.inert) {
     return `
       <span class="qword">${escapeHtml(match[1])}</span>
-      <span class="${ayahClass}" aria-hidden="true">${match[2]}</span>
+      <span class="${ayahClass}"${transitionArcStyle} aria-hidden="true">${match[2]}</span>
     `;
   }
   const ariaLabel = buildAyahAriaLabel({
@@ -460,7 +464,7 @@ function renderWord(word, activeTarget, options = {}) {
   });
   return `
     <span class="qword">${escapeHtml(match[1])}</span>
-    <button class="${ayahClass}" data-ayah="${key}" data-page="${pageNumber}" aria-label="${ariaLabel}">${match[2]}</button>
+    <button class="${ayahClass}"${transitionArcStyle} data-ayah="${key}" data-page="${pageNumber}" aria-label="${ariaLabel}">${match[2]}</button>
   `;
 }
 
@@ -597,7 +601,7 @@ function bindScreenEvents() {
     modal.addEventListener("click", (event) => event.stopPropagation());
   });
   app.querySelectorAll("[data-tab]").forEach((button) => button.addEventListener("click", () => goHome(button.dataset.tab)));
-  app.querySelectorAll("[data-page]").forEach((button) => button.addEventListener("click", () => openPage(Number(button.dataset.page), { target: button.dataset.target || null })));
+  app.querySelectorAll("[data-page]:not([data-ayah])").forEach((button) => button.addEventListener("click", () => openPage(Number(button.dataset.page), { target: button.dataset.target || null })));
   app.querySelectorAll("[data-juz]").forEach((button) => button.addEventListener("click", () => { selectedJuz = Number(button.dataset.juz); render(); }));
   app.querySelectorAll("[data-review-target]").forEach((button) => button.addEventListener("click", () => {
     const item = JSON.parse(decodeURIComponent(button.dataset.reviewTarget));
@@ -607,7 +611,10 @@ function bindScreenEvents() {
   app.querySelectorAll("[data-remove-ayah-bookmark]").forEach((button) => button.addEventListener("click", () => removeAyahBookmark(button.dataset.removeAyahBookmark)));
 
   app.querySelectorAll(".page-slot.current button.ayah-mark[data-ayah]").forEach((button) => {
-    button.addEventListener("click", () => handleAyahTap(button.dataset.ayah));
+    button.addEventListener("click", () => {
+      if (lastPointerAyahTap.key === button.dataset.ayah && Date.now() < lastPointerAyahTap.until) return;
+      handleAyahTap(button.dataset.ayah, button);
+    });
     bindLongPress(button, () => { detailTarget = { kind: "ayah", key: button.dataset.ayah, page: Number(button.dataset.page) }; render(); });
   });
 
@@ -661,6 +668,11 @@ function bindScreenEvents() {
       const didDrag = swipeStart.dragging;
       swipeStart = null;
       pageShell.releasePointerCapture?.(event.pointerId);
+      const ayahMarker = !didDrag ? resolveAyahMarkerAtPoint(event.clientX, event.clientY) : null;
+      if (ayahMarker) {
+        lastPointerAyahTap = { key: ayahMarker.dataset.ayah, until: Date.now() + 500 };
+        handleAyahTap(ayahMarker.dataset.ayah, ayahMarker);
+      }
       if (didDrag) suppressClickUntil = Date.now() + 350;
       if (trackState.direction && shouldCommitTrackMove({ dx, dy, commitDistance: SWIPE_COMMIT_DISTANCE, verticalLimit: SWIPE_CANCEL_VERTICAL_LIMIT })) {
         moveTrack(trackState.direction, { dragOffset });
@@ -701,6 +713,12 @@ function bindScreenEvents() {
       if (target) openPage(target);
     });
   }
+}
+
+function resolveAyahMarkerAtPoint(x, y) {
+  return document
+    .elementFromPoint(x, y)
+    ?.closest?.(".page-slot.current button.ayah-mark[data-ayah]") || null;
 }
 
 async function handleAction(event, el) {
@@ -775,7 +793,8 @@ async function moveTrack(direction, options = {}) {
   }
 }
 
-function handleAyahTap(key) {
+function handleAyahTap(key, marker = null) {
+  if (marker) playAyahTapFeedback(marker);
   if (pendingTap?.key === key) {
     clearTimeout(pendingTap.timer);
     const previous = previousVisibleAyah(key);
@@ -817,8 +836,47 @@ async function postMutationFeedback(key) {
   const selector = key.includes("|")
     ? `[data-ayah="${CSS.escape(key.split("|")[2])}"]`
     : `[data-ayah="${CSS.escape(key)}"]`;
-  app.querySelector(selector)?.classList.add("pulse");
+  const marker = app.querySelector(selector);
+  const count = key.includes("|") ? getTransitionCount(key) : getAyahCount(key);
+  if (marker) {
+    restartAyahPulse(marker);
+    spawnAyahCountPop(marker, count, app);
+  }
   if (navigator.vibrate && state.settings.vibration !== false) navigator.vibrate(20);
+}
+
+function restartAyahPulse(marker) {
+  playAyahTapFeedback(marker);
+}
+
+function playAyahTapFeedback(marker) {
+  if (!marker?.animate) {
+    marker?.classList.add("pulse");
+    return;
+  }
+  marker.getAnimations?.().forEach((animation) => {
+    if (animation.effect?.target === marker) animation.cancel();
+  });
+  marker.animate(
+    [
+      { transform: "scale(1.22)" },
+      { transform: "scale(.98)", offset: .72 },
+      { transform: "scale(1)" }
+    ],
+    { duration: 420, easing: "ease-out" }
+  );
+}
+
+function spawnAyahCountPop(marker, count, container) {
+  const rect = marker.getBoundingClientRect();
+  const pop = document.createElement("span");
+  pop.className = "ayah-count-pop";
+  pop.textContent = String(count);
+  pop.setAttribute("aria-hidden", "true");
+  pop.style.left = `${rect.left + rect.width / 2}px`;
+  pop.style.top = `${rect.top}px`;
+  container.append(pop);
+  pop.addEventListener("animationend", () => pop.remove(), { once: true });
 }
 
 function addEvent(type, payload) {

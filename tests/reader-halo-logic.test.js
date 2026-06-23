@@ -20,8 +20,31 @@ test("buildAyahRingState maps ayah and transition counts into badge and ring cla
     {
       ayahStrength: "strong",
       transitionStrength: "building",
-      hasTransitionRing: true
+      hasTransitionRing: true,
+      transitionArcDegrees: 216
     }
+  );
+});
+
+test("buildAyahRingState computes transition arc from count over target", () => {
+  assert.equal(
+    buildAyahRingState({
+      ayahCount: 1,
+      transitionCount: 5,
+      ayahThresholds,
+      transitionThresholds
+    }).transitionArcDegrees,
+    180
+  );
+
+  assert.equal(
+    buildAyahRingState({
+      ayahCount: 1,
+      transitionCount: 80,
+      ayahThresholds,
+      transitionThresholds
+    }).transitionArcDegrees,
+    360
   );
 });
 
@@ -36,7 +59,8 @@ test("buildAyahRingState omits the ring when no transition is available", () => 
     {
       ayahStrength: "weak",
       transitionStrength: null,
-      hasTransitionRing: false
+      hasTransitionRing: false,
+      transitionArcDegrees: 0
     }
   );
 });
