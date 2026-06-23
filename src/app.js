@@ -504,7 +504,7 @@ function renderDetails() {
                 <span class="small-pill ${detail.transitionOnly.strength}">${titleCase(detail.transitionOnly.strength)}</span>
               </div>
               ${renderCountValue(detail.transitionOnly.count, detail.transitionOnly.target)}
-              <button class="detail-mini-action secondary-btn" data-action="decrement-detail">-</button>
+              <button class="detail-mini-action secondary-btn" data-action="decrement-detail" aria-label="Decrease transition count">-</button>
             </div>
             <button class="danger-btn full" data-action="reset-detail">Reset</button>
           </div>
@@ -875,14 +875,6 @@ function resetDetail() {
     const ayahCount = getAyahCount(detailTarget.key);
     state.ayahProgress[detailTarget.key] = { repetitionCount: 0 };
     addEvent("reset", { ayahKey: detailTarget.key, delta: -ayahCount, page: route.page });
-
-    // In ayah detail, reset should clear both visible editable counts.
-    const incoming = resolveIncomingTransition(detailTarget.key);
-    if (incoming) {
-      const transitionCount = getTransitionCount(incoming.key);
-      state.transitionProgress[incoming.key] = { repetitionCount: 0 };
-      addEvent("reset", { transitionKey: incoming.key, delta: -transitionCount, page: route.page });
-    }
   } else {
     const count = getTransitionCount(detailTarget.key);
     state.transitionProgress[detailTarget.key] = { repetitionCount: 0 };
