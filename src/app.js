@@ -593,6 +593,9 @@ function bindGlobalEvents() {
 }
 
 function bindScreenEvents() {
+  app.querySelectorAll(".modal").forEach((modal) => {
+    modal.addEventListener("click", (event) => event.stopPropagation());
+  });
   app.querySelectorAll("[data-tab]").forEach((button) => button.addEventListener("click", () => goHome(button.dataset.tab)));
   app.querySelectorAll("[data-page]").forEach((button) => button.addEventListener("click", () => openPage(Number(button.dataset.page), { target: button.dataset.target || null })));
   app.querySelectorAll("[data-juz]").forEach((button) => button.addEventListener("click", () => { selectedJuz = Number(button.dataset.juz); render(); }));
@@ -850,7 +853,10 @@ async function mutateSpecificDetail(kind, delta) {
   if (!detailTarget) return;
 
   if (kind === "ayah" && detailTarget.kind === "ayah") {
-    state.ayahProgress[detailTarget.key] = { repetitionCount: Math.max(0, getAyahCount(detailTarget.key) + delta) };
+    const currentCount = getAyahCount(detailTarget.key);
+    const nextCount = Math.max(0, currentCount + delta);
+    if (nextCount === currentCount) return;
+    state.ayahProgress[detailTarget.key] = { repetitionCount: nextCount };
     addEvent("decrement", { ayahKey: detailTarget.key, delta, page: route.page });
     await saveState();
     render();
@@ -862,7 +868,10 @@ async function mutateSpecificDetail(kind, delta) {
       ? detailTarget.key
       : resolveIncomingTransition(detailTarget.key)?.key;
     if (!target) return;
-    state.transitionProgress[target] = { repetitionCount: Math.max(0, getTransitionCount(target) + delta) };
+    const currentCount = getTransitionCount(target);
+    const nextCount = Math.max(0, currentCount + delta);
+    if (nextCount === currentCount) return;
+    state.transitionProgress[target] = { repetitionCount: nextCount };
     addEvent("decrement", { transitionKey: target, delta, page: route.page });
     await saveState();
     render();
