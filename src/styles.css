@@ -654,7 +654,6 @@ small {
 .qcf4-slot {
   place-items: center;
   overflow: hidden;
-  --qcf4-scale: min(calc((100vw - 24px) / 512), calc((100vh - 156px) / 910), 1);
 }
 
 .page-shell.dragging {
@@ -710,23 +709,21 @@ small {
 
 mushaf-page {
   display: flex;
-  width: 512px;
-  height: 910px;
+  width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: center;
   color: #f6f1df;
   text-align: justify;
   text-align-last: justify;
   user-select: none;
-  transform: scale(var(--qcf4-scale));
-  transform-origin: center;
 }
 
 mushaf-page-inner {
   display: flex;
   flex-direction: column;
-  width: 512px;
-  height: 910px;
+  width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: space-between;
   -webkit-font-smoothing: antialiased;
@@ -746,8 +743,8 @@ mushaf-page-inner {
   width: 100%;
   direction: rtl;
   unicode-bidi: bidi-override;
-  font-size: 29px;
-  line-height: 44px;
+  font-size: min(29px, 5.55cqw);
+  line-height: min(44px, 8.42cqw);
   letter-spacing: -2.1px;
   white-space: nowrap;
   text-align-last: justify;
@@ -755,7 +752,7 @@ mushaf-page-inner {
 
 .ayah-chars .line {
   display: block;
-  min-height: 44px;
+  min-height: min(44px, 8.42cqw);
   width: 100%;
   unicode-bidi: bidi-override;
 }
