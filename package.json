@@ -6,8 +6,12 @@
   "scripts": {
     "build": "node scripts/build-static.js",
     "dev": "python -m http.server 4173",
-    "check": "node --check src/app.js && node --check src/data/detail-logic.js && node --check src/data/juz.js && node --check src/data/metadata-logic.js && node --check src/data/mushaf-line-fit.js && node --check src/data/navigation-logic.js && node --check src/data/offline-assets.js && node --check src/data/settings-logic.js && node --check src/data/storage.js && node --check src/reader/swipe-reveal.js && node --check sw.js && node --check scripts/generate-mushaf-metadata.js && node --check scripts/generate-navigation-metadata.js",
+    "check": "node --check src/app.js && node --check src/startup-loader.js && node --check src/data/detail-logic.js && node --check src/data/juz.js && node --check src/data/metadata-logic.js && node --check src/data/mushaf-line-fit.js && node --check src/data/navigation-logic.js && node --check src/data/offline-assets.js && node --check src/data/settings-logic.js && node --check src/data/storage.js && node --check src/reader/qcf4-data.js && node --check src/reader/qcf4-logic.js && node --check src/reader/qcf4-renderer.js && node --check src/reader/swipe-reveal.js && node --check sw.js && node --check scripts/generate-mushaf-metadata.js && node --check scripts/generate-navigation-metadata.js",
     "test": "node --test tests/*.test.js",
-    "generate:metadata": "node scripts/generate-mushaf-metadata.js && node scripts/generate-navigation-metadata.js"
+    "generate:metadata": "node scripts/generate-mushaf-metadata.js && node scripts/generate-navigation-metadata.js",
+    "sync:qcf4-assets": "node scripts/sync-qcf4-assets.js",
+    "sync:qcf4-source": "node scripts/sync-qcf4-source.js",
+    "inspect:qcf4-source": "node scripts/inspect-qcf4-source.js",
+    "generate:qcf4-pages": "node scripts/generate-qcf4-pages.js"
   }
 }

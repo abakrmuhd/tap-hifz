@@ -1,0 +1,1446 @@
+{
+  "page": 438,
+  "renderer": "qcf4",
+  "lines": [
+    {
+      "line": 1,
+      "lineNumber": 1,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:31-35:31",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:31",
+          "surah": 35,
+          "ayah": 31,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 789,
+              "wordIndex": 1
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 790,
+              "wordIndex": 2
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 791,
+              "wordIndex": 3
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 792,
+              "wordIndex": 4
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 793,
+              "wordIndex": 5
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 794,
+              "wordIndex": 6
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 795,
+              "wordIndex": 7
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 796,
+              "wordIndex": 8
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 797,
+              "wordIndex": 9
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 798,
+              "wordIndex": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "lineNumber": 2,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:31-35:32",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:31",
+          "surah": 35,
+          "ayah": 31,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 799,
+              "wordIndex": 11
+            },
+            {
+              "type": "waqf",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 800
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 801,
+              "wordIndex": 12
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 802,
+              "wordIndex": 13
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 803,
+              "wordIndex": 14
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 804,
+              "wordIndex": 15
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 805,
+              "wordIndex": 16
+            },
+            {
+              "type": "ayah-marker",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 806
+            }
+          ]
+        },
+        {
+          "key": "35:32",
+          "surah": 35,
+          "ayah": 32,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 807,
+              "wordIndex": 1
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 808,
+              "wordIndex": 2
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 809,
+              "wordIndex": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "lineNumber": 3,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:32-35:32",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:32",
+          "surah": 35,
+          "ayah": 32,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 810,
+              "wordIndex": 4
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 811,
+              "wordIndex": 5
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 812,
+              "wordIndex": 6
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 813,
+              "wordIndex": 7
+            },
+            {
+              "type": "waqf",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 814
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 815,
+              "wordIndex": 8
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 816,
+              "wordIndex": 9
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 817,
+              "wordIndex": 10
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 818,
+              "wordIndex": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "lineNumber": 4,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:32-35:32",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:32",
+          "surah": 35,
+          "ayah": 32,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 819,
+              "wordIndex": 12
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 820,
+              "wordIndex": 13
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 821,
+              "wordIndex": 14
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 822,
+              "wordIndex": 15
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 823,
+              "wordIndex": 16
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 824,
+              "wordIndex": 17
+            },
+            {
+              "type": "waqf",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 825
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 826,
+              "wordIndex": 18
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 827,
+              "wordIndex": 19
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "lineNumber": 5,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:32-35:33",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:32",
+          "surah": 35,
+          "ayah": 32,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 828,
+              "wordIndex": 20
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 829,
+              "wordIndex": 21
+            },
+            {
+              "type": "ayah-marker",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 830
+            }
+          ]
+        },
+        {
+          "key": "35:33",
+          "surah": 35,
+          "ayah": 33,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 831,
+              "wordIndex": 1
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 832,
+              "wordIndex": 2
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 833,
+              "wordIndex": 3
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 834,
+              "wordIndex": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "lineNumber": 6,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:33-35:33",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:33",
+          "surah": 35,
+          "ayah": 33,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 835,
+              "wordIndex": 5
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 836,
+              "wordIndex": 6
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 837,
+              "wordIndex": 7
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 838,
+              "wordIndex": 8
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 839,
+              "wordIndex": 9
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 840,
+              "wordIndex": 10
+            },
+            {
+              "type": "waqf",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 841
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 842,
+              "wordIndex": 11
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 843,
+              "wordIndex": 12
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 844,
+              "wordIndex": 13
+            },
+            {
+              "type": "ayah-marker",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 845
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "lineNumber": 7,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:34-35:34",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:34",
+          "surah": 35,
+          "ayah": 34,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 846,
+              "wordIndex": 1
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 847,
+              "wordIndex": 2
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 848,
+              "wordIndex": 3
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 849,
+              "wordIndex": 4
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 850,
+              "wordIndex": 5
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 851,
+              "wordIndex": 6
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 852,
+              "wordIndex": 7
+            },
+            {
+              "type": "waqf",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 853
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 854,
+              "wordIndex": 8
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 855,
+              "wordIndex": 9
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 856,
+              "wordIndex": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "lineNumber": 8,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:34-35:35",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:34",
+          "surah": 35,
+          "ayah": 34,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 857,
+              "wordIndex": 11
+            },
+            {
+              "type": "ayah-marker",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 858
+            }
+          ]
+        },
+        {
+          "key": "35:35",
+          "surah": 35,
+          "ayah": 35,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 859,
+              "wordIndex": 1
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 860,
+              "wordIndex": 2
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 861,
+              "wordIndex": 3
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 862,
+              "wordIndex": 4
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 863,
+              "wordIndex": 5
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 864,
+              "wordIndex": 6
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 865,
+              "wordIndex": 7
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 866,
+              "wordIndex": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "lineNumber": 9,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:35-35:36",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:35",
+          "surah": 35,
+          "ayah": 35,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 867,
+              "wordIndex": 9
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 868,
+              "wordIndex": 10
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 869,
+              "wordIndex": 11
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 870,
+              "wordIndex": 12
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 871,
+              "wordIndex": 13
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 872,
+              "wordIndex": 14
+            },
+            {
+              "type": "ayah-marker",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 873
+            }
+          ]
+        },
+        {
+          "key": "35:36",
+          "surah": 35,
+          "ayah": 36,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 874,
+              "wordIndex": 1
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 875,
+              "wordIndex": 2
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 876,
+              "wordIndex": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "lineNumber": 10,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:36-35:36",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:36",
+          "surah": 35,
+          "ayah": 36,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 877,
+              "wordIndex": 4
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 878,
+              "wordIndex": 5
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 879,
+              "wordIndex": 6
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 880,
+              "wordIndex": 7
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 881,
+              "wordIndex": 8
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 882,
+              "wordIndex": 9
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 883,
+              "wordIndex": 10
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 884,
+              "wordIndex": 11
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 885,
+              "wordIndex": 12
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 886,
+              "wordIndex": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "lineNumber": 11,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:36-35:37",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:36",
+          "surah": 35,
+          "ayah": 36,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 887,
+              "wordIndex": 14
+            },
+            {
+              "type": "waqf",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 888
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 889,
+              "wordIndex": 15
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 890,
+              "wordIndex": 16
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 891,
+              "wordIndex": 17
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 892,
+              "wordIndex": 18
+            },
+            {
+              "type": "ayah-marker",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 893
+            }
+          ]
+        },
+        {
+          "key": "35:37",
+          "surah": 35,
+          "ayah": 37,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 894,
+              "wordIndex": 1
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 895,
+              "wordIndex": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "lineNumber": 12,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:37-35:37",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:37",
+          "surah": 35,
+          "ayah": 37,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 896,
+              "wordIndex": 3
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 897,
+              "wordIndex": 4
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 898,
+              "wordIndex": 5
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 899,
+              "wordIndex": 6
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 900,
+              "wordIndex": 7
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 901,
+              "wordIndex": 8
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 902,
+              "wordIndex": 9
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 903,
+              "wordIndex": 10
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 904,
+              "wordIndex": 11
+            },
+            {
+              "type": "waqf",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 905
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "lineNumber": 13,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:37-35:37",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:37",
+          "surah": 35,
+          "ayah": 37,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 906,
+              "wordIndex": 12
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 907,
+              "wordIndex": 13
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 908,
+              "wordIndex": 14
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 909,
+              "wordIndex": 15
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 910,
+              "wordIndex": 16
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 911,
+              "wordIndex": 17
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 912,
+              "wordIndex": 18
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 913,
+              "wordIndex": 19
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 914,
+              "wordIndex": 20
+            },
+            {
+              "type": "waqf",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 915
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "lineNumber": 14,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:37-35:38",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:37",
+          "surah": 35,
+          "ayah": 37,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 916,
+              "wordIndex": 21
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 917,
+              "wordIndex": 22
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 918,
+              "wordIndex": 23
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 919,
+              "wordIndex": 24
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 920,
+              "wordIndex": 25
+            },
+            {
+              "type": "ayah-marker",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 921
+            }
+          ]
+        },
+        {
+          "key": "35:38",
+          "surah": 35,
+          "ayah": 38,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 922,
+              "wordIndex": 1
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 923,
+              "wordIndex": 2
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 924,
+              "wordIndex": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "line": 15,
+      "lineNumber": 15,
+      "centered": false,
+      "type": "text",
+      "verseRange": "35:38-35:38",
+      "justify": true,
+      "ayahGroups": [
+        {
+          "key": "35:38",
+          "surah": 35,
+          "ayah": 38,
+          "items": [
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 925,
+              "wordIndex": 4
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 926,
+              "wordIndex": 5
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 927,
+              "wordIndex": 6
+            },
+            {
+              "type": "waqf",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 928
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 929,
+              "wordIndex": 7
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 930,
+              "wordIndex": 8
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 931,
+              "wordIndex": 9
+            },
+            {
+              "type": "word",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 932,
+              "wordIndex": 10
+            },
+            {
+              "type": "ayah-marker",
+              "glyph": "",
+              "fontFamily": "QCF2034",
+              "fontNumber": 34,
+              "fontCode": 933
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

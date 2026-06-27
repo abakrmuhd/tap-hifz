@@ -25,6 +25,9 @@ import {
 } from "./data/settings-logic.js";
 import { getLineFitClass } from "./data/mushaf-line-fit.js?v=2026-06-26-density-fit-all-3";
 import { shouldRegisterServiceWorker } from "./data/runtime-environment.js";
+import { fetchQcf4Page } from "./reader/qcf4-data.js?v=2026-06-26-qcf4-renderer";
+import { buildQcf4PreviousAyahMap, collectQcf4AyahKeys } from "./reader/qcf4-logic.js?v=2026-06-26-qcf4-renderer";
+import { renderQcf4Page } from "./reader/qcf4-renderer.js?v=2026-06-26-qcf4-renderer";
 import {
   buildTrackPages,
   clampTrackOffset,
@@ -104,6 +107,7 @@ let trackState = {
   offset: 0
 };
 let pageCache = new Map();
+let qcf4PageCache = new Map();
 let surahVerseCounts = new Map();
 
 const SWIPE_COMMIT_DISTANCE = 60;
@@ -197,16 +201,31 @@ async function getPageData(page) {
   return data;
 }
 
+async function getQcf4PageData(page) {
+  if (!page) return null;
+  if (qcf4PageCache.has(page)) return qcf4PageCache.get(page);
+  const data = await fetchQcf4Page(page);
+  qcf4PageCache.set(page, data);
+  return data;
+}
+
 async function loadTrackPages(currentPage) {
   const pages = buildTrackPages({ currentPage, pageCount: PAGE_COUNT });
-  const [previous, current, next] = await Promise.all([
+  const [previous, current, next, previousQcf4, currentQcf4, nextQcf4] = await Promise.all([
     pages.previous ? getPageData(pages.previous).catch(() => null) : Promise.resolve(null),
     getPageData(pages.current),
-    pages.next ? getPageData(pages.next).catch(() => null) : Promise.resolve(null)
+    pages.next ? getPageData(pages.next).catch(() => null) : Promise.resolve(null),
+    pages.previous ? getQcf4PageData(pages.previous).catch(() => null) : Promise.resolve(null),
+    getQcf4PageData(pages.current).catch(() => null),
+    pages.next ? getQcf4PageData(pages.next).catch(() => null) : Promise.resolve(null)
   ]);
   return {
     numbers: pages,
-    data: { previous, current, next }
+    data: {
+      previous: { legacy: previous, qcf4: previousQcf4 },
+      current: { legacy: current, qcf4: currentQcf4 },
+      next: { legacy: next, qcf4: nextQcf4 }
+    }
   };
 }
 
@@ -435,13 +454,30 @@ function renderReading() {
 }
 
 function renderPageSlot(pageData, pageNumber, slotName, inert = false, activeTarget = null) {
-  if (!pageNumber || !pageData) {
+  const legacyPageData = pageData?.legacy || pageData;
+  const qcf4PageData = pageData?.qcf4 || null;
+  const visiblePageData = qcf4PageData || legacyPageData;
+  if (!pageNumber || !visiblePageData) {
     return `<div class="page-slot ${slotName} empty" aria-hidden="true"></div>`;
   }
-  const previousAyahMap = buildPreviousAyahMap(pageData);
-  const lines = pageData.lines.map((line) => renderLine(line, activeTarget, { inert, pageNumber, previousAyahMap })).join("");
   const parity = pageNumber % 2 ? "odd" : "even";
   const openingPage = pageNumber <= 2 ? "opening-page" : "";
+  if (qcf4PageData) {
+    const previousAyahMap = buildQcf4PreviousAyahMap(qcf4PageData);
+    return `
+      <div class="page-slot ${slotName} ${parity} ${openingPage} qcf4-slot" ${inert ? 'aria-hidden="true"' : ""}>
+        ${renderQcf4Page(qcf4PageData, {
+          inert,
+          buildAyahAttrs: () => "",
+          buildAyahMarkerAttrs: (key) => buildQcf4AyahMarkerAttrs(key, { pageNumber }),
+          buildAyahMarkerClass: (key) => buildQcf4AyahMarkerClass(key, activeTarget, { pageNumber, previousAyahMap }),
+          buildGroupClass: () => "ayah-group"
+        })}
+      </div>
+    `;
+  }
+  const previousAyahMap = buildPreviousAyahMap(legacyPageData);
+  const lines = legacyPageData.lines.map((line) => renderLine(line, activeTarget, { inert, pageNumber, previousAyahMap })).join("");
   return `
     <div class="page-slot ${slotName} ${parity} ${openingPage}" ${inert ? 'aria-hidden="true"' : ""}>
       <div class="mushaf" dir="rtl">${lines}</div>
@@ -503,6 +539,57 @@ function renderWord(word, activeTarget, options = {}) {
     <span class="qword">${escapeHtml(match[1])}</span>
     <button class="${ayahClass}"${transitionArcStyle} data-ayah="${key}" data-page="${pageNumber}" aria-label="${ariaLabel}">${match[2]}</button>
   `;
+}
+
+function buildQcf4AyahMarkerAttrs(key, { pageNumber }) {
+  const ariaLabel = buildRepetitionAriaLabel({
+    ayahLabel: labelAyah(key),
+    repetitionCountLevel: getCountLevelForAyah(key),
+    transitionCountLevel: getTransitionLevelForAyah(key, pageNumber)
+  });
+  return `data-ayah="${escapeHtml(key)}" data-page="${pageNumber}" role="button" tabindex="0" aria-label="${escapeHtml(ariaLabel)}"`;
+}
+
+function buildQcf4AyahMarkerClass(key, activeTarget, { pageNumber, previousAyahMap }) {
+  const previous = previousAyahMap?.get(key) || null;
+  const transition = previous ? transitionKey(pageNumber, previous, key) : null;
+  const ringState = buildRepetitionRingState({
+    repetitionCount: getRepetitionCount(key),
+    transitionCount: transition ? getTransitionCount(transition) : null,
+    repetitionThresholds: state.settings.repetitionThresholds,
+    transitionCountThresholds: state.settings.transitionCountThresholds
+  });
+  const ayahActive = activeTarget?.kind === "Ayah" && activeTarget.key === key;
+  const transitionActive = activeTarget?.kind === "Transition" && activeTarget.key === transition;
+  return [
+    "ayah-marker",
+    "ayah-mark",
+    ringState.repetitionCountLevel,
+    ringState.hasTransitionRing ? `transition-count-${ringState.transitionCountLevel}` : "",
+    transitionActive ? "transition-target" : "",
+    ayahActive ? "target" : ""
+  ].filter(Boolean).join(" ");
+}
+
+function getCountLevelForAyah(key) {
+  return buildRepetitionRingState({
+    repetitionCount: getRepetitionCount(key),
+    transitionCount: null,
+    repetitionThresholds: state.settings.repetitionThresholds,
+    transitionCountThresholds: state.settings.transitionCountThresholds
+  }).repetitionCountLevel;
+}
+
+function getTransitionLevelForAyah(key, pageNumber) {
+  const previous = previousVisibleAyah(key);
+  if (!previous) return null;
+  const transition = transitionKey(pageNumber, previous, key);
+  return buildRepetitionRingState({
+    repetitionCount: getRepetitionCount(key),
+    transitionCount: getTransitionCount(transition),
+    repetitionThresholds: state.settings.repetitionThresholds,
+    transitionCountThresholds: state.settings.transitionCountThresholds
+  }).transitionCountLevel;
 }
 
 function renderReviewBar() {
@@ -681,7 +768,7 @@ function bindScreenEvents() {
   app.querySelectorAll("[data-remove-page-bookmark]").forEach((button) => button.addEventListener("click", () => removePageBookmark(Number(button.dataset.removePageBookmark))));
   app.querySelectorAll("[data-remove-ayah-bookmark]").forEach((button) => button.addEventListener("click", () => removeAyahBookmark(button.dataset.removeAyahBookmark)));
 
-  app.querySelectorAll(".page-slot.current button.ayah-mark[data-ayah]").forEach((button) => {
+  app.querySelectorAll(".page-slot.current .ayah-marker[data-ayah], .page-slot.current button.ayah-mark[data-ayah]").forEach((button) => {
     button.addEventListener("click", () => {
       if (lastPointerAyahTap.key === button.dataset.ayah && Date.now() < lastPointerAyahTap.until) return;
       handleAyahTap(button.dataset.ayah, button);
@@ -834,7 +921,7 @@ function bindScreenEvents() {
 function resolveAyahMarkerAtPoint(x, y) {
   return document
     .elementFromPoint(x, y)
-    ?.closest?.(".page-slot.current button.ayah-mark[data-ayah]") || null;
+    ?.closest?.(".page-slot.current .ayah-marker[data-ayah], .page-slot.current button.ayah-mark[data-ayah]") || null;
 }
 
 async function handleAction(event, el) {
@@ -1224,8 +1311,10 @@ function previousVisibleAyah(key) {
 }
 
 function visibleAyahKeys() {
+  const currentPageData = trackPages.current?.qcf4 || trackPages.current;
+  if (currentPageData?.renderer === "qcf4") return collectQcf4AyahKeys(currentPageData);
   const keys = [];
-  trackPages.current?.lines?.forEach((line) => {
+  currentPageData?.lines?.forEach((line) => {
     line.words?.forEach((word) => {
       const text = decodeText(word.word);
       if (/[٠-٩]+$/.test(text)) {
@@ -1238,8 +1327,10 @@ function visibleAyahKeys() {
 }
 
 function visibleAyahKeysForPage(pageData) {
+  const currentPageData = pageData?.qcf4 || pageData;
+  if (currentPageData?.renderer === "qcf4") return collectQcf4AyahKeys(currentPageData);
   const keys = [];
-  pageData?.lines?.forEach((line) => {
+  currentPageData?.lines?.forEach((line) => {
     line.words?.forEach((word) => {
       const text = decodeText(word.word);
       if (/[Ù -Ù©]+$/.test(text)) {
