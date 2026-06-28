@@ -77,6 +77,77 @@ export function getPageRepetitionLevel(page, metadata, ayahProgress, thresholds)
     .sort((a, b) => rank[a] - rank[b])[0];
 }
 
+export function getPageCellProgressState({
+  page,
+  metadata,
+  ayahProgress,
+  transitionProgress,
+  repetitionThresholds,
+  transitionCountThresholds
+}) {
+  const pageData = metadata.pages[String(page)];
+  return getProgressStateForKeys({
+    ayahKeys: pageData?.ayahKeys || [],
+    transitionKeys: pageData?.transitionKeys || [],
+    ayahProgress,
+    transitionProgress,
+    repetitionThresholds,
+    transitionCountThresholds
+  });
+}
+
+export function getPageRangeCellProgressState({
+  startPage,
+  endPage,
+  metadata,
+  ayahProgress,
+  transitionProgress,
+  repetitionThresholds,
+  transitionCountThresholds
+}) {
+  const ayahKeys = [];
+  const transitionKeys = [];
+  for (let page = startPage; page <= endPage; page += 1) {
+    const pageData = metadata.pages[String(page)];
+    ayahKeys.push(...(pageData?.ayahKeys || []));
+    transitionKeys.push(...(pageData?.transitionKeys || []));
+  }
+  return getProgressStateForKeys({
+    ayahKeys,
+    transitionKeys,
+    ayahProgress,
+    transitionProgress,
+    repetitionThresholds,
+    transitionCountThresholds
+  });
+}
+
+function getProgressStateForKeys({
+  ayahKeys,
+  transitionKeys,
+  ayahProgress,
+  transitionProgress,
+  repetitionThresholds,
+  transitionCountThresholds
+}) {
+  const ayahCounts = ayahKeys.map((key) => ayahProgress[key]?.repetitionCount || 0);
+  const transitionCounts = transitionKeys.map((key) => transitionProgress[key]?.repetitionCount || 0);
+  const counts = [...ayahCounts, ...transitionCounts];
+  if (!counts.some((count) => count > 0)) return { empty: true, progress: 0 };
+
+  const progressValues = [
+    ...ayahCounts.map((count) => getCountProgressRatio(count, repetitionThresholds)),
+    ...transitionCounts.map((count) => getCountProgressRatio(count, transitionCountThresholds))
+  ];
+  return { empty: false, progress: Math.min(...progressValues) };
+}
+
+function getCountProgressRatio(count, thresholds) {
+  const masteredAt = thresholds.strongMax + 1;
+  if (masteredAt <= 0) return 1;
+  return Math.min(1, Math.max(0, count / masteredAt));
+}
+
 export function buildLowCountItems({
   metadata,
   ayahProgress,

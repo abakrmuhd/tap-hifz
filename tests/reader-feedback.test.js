@@ -100,6 +100,12 @@ test("reader no longer renders the swipe hint copy", () => {
   assert.doesNotMatch(styles, /\.swipe-hint/);
 });
 
+test("settings modal is full-height with a sticky close header", () => {
+  assert.match(styles, /\.modal-backdrop:has\(\.settings-modal\)\s*\{[\s\S]*padding:\s*0/);
+  assert.match(styles, /\.settings-modal\s*\{[\s\S]*height:\s*100dvh[\s\S]*max-height:\s*100dvh[\s\S]*overflow-y:\s*auto/);
+  assert.match(styles, /\.settings-modal\s+\.modal-head\s*\{[\s\S]*position:\s*sticky[\s\S]*top:\s*0[\s\S]*z-index:\s*2/);
+});
+
 test("transition underline renders as a centered source-ayah cue", () => {
   assert.match(styles, /--transition-progress:\s*0%/);
   assert.match(styles, /\.ayah-mark::before\s*\{[\s\S]*background:\s*linear-gradient\(90deg,\s*transparent,\s*color-mix\(in srgb,\s*var\(--text\) 34%,\s*transparent\)/);

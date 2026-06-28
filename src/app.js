@@ -2,10 +2,12 @@ import { JUZ_RANGES } from "./data/juz.js";
 import { describeDetailTarget } from "./data/detail-logic.js?v=2026-06-27-transition-underline";
 import {
   buildLowCountItems,
+  getPageCellProgressState,
+  getPageRangeCellProgressState,
   getPageRepetitionLevel,
   resolveOutgoingTransition,
   resolveActiveTarget
-} from "./data/metadata-logic.js?v=2026-06-27-transition-underline";
+} from "./data/metadata-logic.js?v=2026-06-28-progress-cell-gradient";
 import {
   buildCountProgressColor,
   buildCountProgressInkColor,
@@ -326,13 +328,14 @@ function renderProgress() {
   const previewQueueSize = 5;
   const strip = JUZ_RANGES.map(([number, start, end]) => `<span class="mushaf-strip-segment ${rangeRepetitionLevel(start, end)}" aria-hidden="true" title="Juz ${number}"></span>`).join("");
   const juzItems = JUZ_RANGES.map(([number, start, end]) => {
-    const repetitionLevel = rangeRepetitionLevel(start, end);
-    return `<button class="juz-cell ${repetitionLevel} ${number === selectedJuz ? "selected" : ""}" data-juz="${number}" aria-label="Juz ${number}">${number}</button>`;
+    const progressState = rangeCellProgressState(start, end);
+    return `<button class="juz-cell ${cellProgressClass(progressState)} ${number === selectedJuz ? "selected" : ""}"${cellProgressStyle(progressState)} data-juz="${number}" aria-label="Juz ${number}">${number}</button>`;
   }).join("");
   const current = JUZ_RANGES.find(([number]) => number === selectedJuz);
   const pages = [];
   for (let page = current[1]; page <= current[2]; page += 1) {
-    pages.push(`<button class="page-cell ${pageRepetitionLevel(page)}" data-page="${page}">${page}</button>`);
+    const progressState = pageCellProgressState(page);
+    pages.push(`<button class="page-cell ${cellProgressClass(progressState)}"${cellProgressStyle(progressState)} data-page="${page}">${page}</button>`);
   }
   const lowCountItems = getLowCountItems();
   const previewItems = lowCountItems.slice(0, previewQueueSize);
@@ -453,7 +456,7 @@ function renderBookmarks() {
     <h3 class="label">Ayah Bookmarks</h3>
     <div class="queue-list">
       ${state.ayahBookmarks.length ? state.ayahBookmarks.map((item) => `
-        <div class="list-row static"><button data-page="${item.page}" data-target="${item.key}"><strong>${labelAyah(item.key)}</strong><small>Page ${item.page}</small></button><button class="icon-btn small" data-remove-ayah-bookmark="${item.key}" aria-label="Remove ayah bookmark">${icons.trash}</button></div>
+        <div class="list-row static"><button data-page="${item.page}" data-target="${item.key}"><strong>${labelAyah(item.key)}</strong><small>Page ${item.page}</small></button><button class="icon-btn small active" data-remove-ayah-bookmark="${item.key}" aria-label="Remove ayah bookmark">${icons.bookmark}</button></div>
       `).join("") : `<p class="empty-state">No ayah bookmarks yet.</p>`}
     </div>
   `;
@@ -1390,6 +1393,40 @@ function pageRepetitionLevel(page) {
   return getPageRepetitionLevel(page, metadata, state.ayahProgress, state.settings.repetitionThresholds);
 }
 
+function pageCellProgressState(page) {
+  return getPageCellProgressState({
+    page,
+    metadata,
+    ayahProgress: state.ayahProgress,
+    transitionProgress: state.transitionProgress,
+    repetitionThresholds: state.settings.repetitionThresholds,
+    transitionCountThresholds: state.settings.transitionCountThresholds
+  });
+}
+
+function rangeCellProgressState(startPage, endPage) {
+  return getPageRangeCellProgressState({
+    startPage,
+    endPage,
+    metadata,
+    ayahProgress: state.ayahProgress,
+    transitionProgress: state.transitionProgress,
+    repetitionThresholds: state.settings.repetitionThresholds,
+    transitionCountThresholds: state.settings.transitionCountThresholds
+  });
+}
+
+function cellProgressClass(progressState) {
+  return progressState.empty ? "empty" : "progress-cell";
+}
+
+function cellProgressStyle(progressState) {
+  if (progressState.empty) return "";
+  const progress = Math.round(progressState.progress * 1000) / 10;
+  const ink = progressState.progress >= 0.64 ? "#263500" : "#f7f7ef";
+  return ` style="--cell-progress: ${progress}%; --cell-ink: ${ink}"`;
+}
+
 function countPages(range, target) {
   let count = 0;
   for (let page = range[1]; page <= range[2]; page += 1) if (pageRepetitionLevel(page) === target) count += 1;
@@ -1580,7 +1617,7 @@ function resolveDetailTransition(ayahKey) {
 }
 
 function formatTransitionPath(from, to) {
-  return `${from.split(":")[1]} -> ${to.split(":")[1]}`;
+  return `${from.split(":")[1]} - ${to.split(":")[1]}`;
 }
 
 function renderCountValue(count, target) {

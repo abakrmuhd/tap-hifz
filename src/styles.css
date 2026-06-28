@@ -404,14 +404,35 @@ small {
 }
 
 .mushaf-strip {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(30, minmax(0, 1fr));
   gap: 0;
-  height: 8px;
+  height: 2px;
   margin-bottom: 6px;
-  overflow: hidden;
-  border-radius: 999px;
+  overflow: visible;
+  border-radius: 0;
   background: var(--line-soft);
+}
+
+.mushaf-strip::before,
+.mushaf-strip::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 18px;
+  pointer-events: none;
+}
+
+.mushaf-strip::before {
+  right: 100%;
+  background: linear-gradient(to right, transparent, var(--line-soft));
+}
+
+.mushaf-strip::after {
+  left: 100%;
+  background: linear-gradient(to right, var(--line-soft), transparent);
 }
 
 .mushaf-strip-segment {
@@ -516,6 +537,11 @@ small {
 .page-cell.empty {
   background: var(--surface-2);
   color: #f7f7f7;
+}
+.juz-cell.progress-cell,
+.page-cell.progress-cell {
+  background: color-mix(in srgb, var(--weak), var(--mastered) var(--cell-progress, 0%));
+  color: var(--cell-ink, #f7f7ef);
 }
 .weak { background: var(--weak); color: #f7f7ef; }
 .building { background: var(--building); color: #fef3c7; }
@@ -1251,6 +1277,30 @@ mushaf-page-inner {
 
 .modal-head {
   min-height: 42px;
+}
+
+.modal-backdrop:has(.settings-modal) {
+  padding: 0;
+}
+
+.settings-modal {
+  width: min(100%, 460px);
+  height: 100dvh;
+  max-height: 100dvh;
+  border-radius: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.settings-modal .modal-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin: -14px -14px 10px;
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--phone) 96%, transparent);
+  backdrop-filter: blur(10px);
 }
 
 .detail-modal {

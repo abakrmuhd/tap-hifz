@@ -1,18 +1,18 @@
-export const CACHE_VERSION = "hifz-trackr-v51-right-click-modal-only";
+export const CACHE_VERSION = "hifz-trackr-v52-progress-cell-gradient";
 
 export const SHELL_ASSETS = [
   "/",
   "/index.html",
   "/manifest.webmanifest",
   "/icon.svg",
-  "/src/app.js?v=2026-06-28-right-click-modal-only",
-  "/src/styles.css?v=2026-06-28-right-click-modal-only"
+  "/src/app.js?v=2026-06-28-progress-cell-gradient",
+  "/src/styles.css?v=2026-06-28-progress-cell-gradient"
 ];
 
 export const DATA_ASSETS = [
   "/src/data/home-search-view.js?v=2026-06-28-home-search",
   "/src/data/juz.js",
-  "/src/data/metadata-logic.js?v=2026-06-27-transition-underline",
+  "/src/data/metadata-logic.js?v=2026-06-28-progress-cell-gradient",
   "/src/data/mushaf-line-fit.js?v=2026-06-26-density-fit-all-3",
   "/src/data/mushaf-metadata.json",
   "/src/data/navigation-logic.js?v=2026-06-28-home-search",

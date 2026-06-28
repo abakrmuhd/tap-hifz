@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import {
   buildLowCountItems,
   buildMetadataFromPages,
+  getPageCellProgressState,
+  getPageRangeCellProgressState,
   getPageRepetitionLevel,
   resolveOutgoingTransition,
   resolveActiveTarget
@@ -57,6 +59,96 @@ test("getPageRepetitionLevel only uses ayahs that belong to the requested page",
 
   assert.equal(getPageRepetitionLevel(1, metadata, ayahProgress, thresholds), "weak");
   assert.equal(getPageRepetitionLevel(2, metadata, ayahProgress, thresholds), "strong");
+});
+
+test("getPageCellProgressState includes page-local repetitions and transitions", () => {
+  const metadata = buildMetadataFromPages(samplePages, juzRanges);
+  const thresholds = { weakMax: 9, buildingMax: 19, strongMax: 39 };
+
+  assert.deepEqual(
+    getPageCellProgressState({
+      page: 1,
+      metadata,
+      ayahProgress: {},
+      transitionProgress: {},
+      repetitionThresholds: thresholds,
+      transitionCountThresholds: thresholds
+    }),
+    { empty: true, progress: 0 }
+  );
+
+  assert.deepEqual(
+    getPageCellProgressState({
+      page: 1,
+      metadata,
+      ayahProgress: {
+        "1:1": { repetitionCount: 80 },
+        "1:2": { repetitionCount: 40 }
+      },
+      transitionProgress: { "1|1:1|1:2": { repetitionCount: 20 } },
+      repetitionThresholds: thresholds,
+      transitionCountThresholds: thresholds
+    }),
+    { empty: false, progress: 0.5 }
+  );
+
+  assert.deepEqual(
+    getPageCellProgressState({
+      page: 1,
+      metadata,
+      ayahProgress: {
+        "1:1": { repetitionCount: 80 },
+        "1:2": { repetitionCount: 40 }
+      },
+      transitionProgress: { "1|1:1|1:2": { repetitionCount: 80 } },
+      repetitionThresholds: thresholds,
+      transitionCountThresholds: thresholds
+    }),
+    { empty: false, progress: 1 }
+  );
+});
+
+test("getPageRangeCellProgressState only masters when all page requirements are mastered", () => {
+  const metadata = buildMetadataFromPages(samplePages, juzRanges);
+  const thresholds = { weakMax: 9, buildingMax: 19, strongMax: 39 };
+  const masteredAyahProgress = {
+    "1:1": { repetitionCount: 80 },
+    "1:2": { repetitionCount: 80 },
+    "2:1": { repetitionCount: 80 },
+    "2:2": { repetitionCount: 80 }
+  };
+
+  assert.deepEqual(
+    getPageRangeCellProgressState({
+      startPage: 1,
+      endPage: 2,
+      metadata,
+      ayahProgress: masteredAyahProgress,
+      transitionProgress: {
+        "1|1:1|1:2": { repetitionCount: 80 },
+        "2|2:1|2:2": { repetitionCount: 10 }
+      },
+      repetitionThresholds: thresholds,
+      transitionCountThresholds: thresholds
+    }),
+    { empty: false, progress: 0.25 }
+  );
+
+  assert.deepEqual(
+    getPageRangeCellProgressState({
+      startPage: 1,
+      endPage: 2,
+      metadata,
+      ayahProgress: masteredAyahProgress,
+      transitionProgress: {
+        "1|1:1|1:2": { repetitionCount: 80 },
+        "2|2:1|2:2": { repetitionCount: 80 }
+      },
+      repetitionThresholds: thresholds,
+      transitionCountThresholds: thresholds
+    }),
+    { empty: false, progress: 1 }
+  );
 });
 
 test("buildLowCountItems resolves ayah page by exact ayahToPage mapping", () => {
