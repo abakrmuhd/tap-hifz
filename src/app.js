@@ -480,8 +480,8 @@ function renderReading() {
         <button class="icon-btn" data-action="home" aria-label="Back">${icons.back}</button>
         <div class="reading-meta">${review ? `Review · ${review.index + 1} of ${review.queue.length}` : `Page ${route.page} · ${metadata.pages[String(route.page)]?.label || ""}`}</div>
         <div class="top-actions">
-          ${renderHelpButton()}
           <button class="icon-btn ${pageBookmarked ? "active" : ""}" data-action="toggle-page-bookmark" aria-label="Toggle page bookmark">${icons.bookmark}</button>
+          ${renderHelpButton()}
           <button class="icon-btn" data-action="settings" data-dev-mode-trigger aria-label="Settings">${icons.settings}</button>
         </div>
       </header>

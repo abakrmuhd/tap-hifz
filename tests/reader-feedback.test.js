@@ -131,7 +131,7 @@ test("double tap logs the outgoing transition from the tapped ayah", () => {
 
 test("home and reader expose help buttons before settings and reader actions", () => {
   assert.match(appSource, /<div class="top-actions">\s*\$\{renderHelpButton\(\)\}\s*<button class="icon-btn" data-action="settings"/);
-  assert.match(appSource, /<div class="top-actions">\s*\$\{renderHelpButton\(\)\}\s*<button class="icon-btn \$\{pageBookmarked/);
+  assert.match(appSource, /<button class="icon-btn \$\{pageBookmarked[\s\S]*?\$\{renderHelpButton\(\)\}\s*<button class="icon-btn" data-action="settings"/);
 });
 
 test("help modal contains the four tutorial topics", () => {
