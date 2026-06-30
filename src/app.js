@@ -461,13 +461,13 @@ function renderBookmarks() {
     <h3 class="label">Page Bookmarks</h3>
     <div class="queue-list">
       ${state.pageBookmarks.length ? [...state.pageBookmarks].sort((a, b) => a - b).map((page) => `
-        <div class="list-row static"><button data-page="${page}"><strong>Page ${page}</strong><small>${metadata.pages[String(page)]?.label || ""}</small></button><button class="icon-btn small active" data-remove-page-bookmark="${page}" aria-label="Remove page bookmark">${icons.bookmark}</button></div>
+        <div class="list-row static"><button data-page="${page}"><strong>Page ${page}</strong><small>${metadata.pages[String(page)]?.label || ""}</small></button><button class="icon-btn small bookmark-btn active" data-remove-page-bookmark="${page}" aria-label="Remove page bookmark">${icons.bookmark}</button></div>
       `).join("") : `<p class="empty-state">No page bookmarks yet.</p>`}
     </div>
     <h3 class="label">Ayah Bookmarks</h3>
     <div class="queue-list">
       ${state.ayahBookmarks.length ? state.ayahBookmarks.map((item) => `
-        <div class="list-row static"><button data-page="${item.page}" data-target="${item.key}"><strong>${labelAyah(item.key)}</strong><small>Page ${item.page}</small></button><button class="icon-btn small active" data-remove-ayah-bookmark="${item.key}" aria-label="Remove ayah bookmark">${icons.bookmark}</button></div>
+        <div class="list-row static"><button data-page="${item.page}" data-target="${item.key}"><strong>${labelAyah(item.key)}</strong><small>Page ${item.page}</small></button><button class="icon-btn small bookmark-btn active" data-remove-ayah-bookmark="${item.key}" aria-label="Remove ayah bookmark">${icons.bookmark}</button></div>
       `).join("") : `<p class="empty-state">No ayah bookmarks yet.</p>`}
     </div>
   `;
@@ -489,14 +489,15 @@ function renderReading() {
     <main class="app-shell reader-shell">
       <header class="reading-top">
         <button class="icon-btn" data-action="home" aria-label="Back">${icons.back}</button>
-        <div class="reading-meta">${review ? `Review · ${review.index + 1} of ${review.queue.length}` : `Page ${route.page} · ${metadata.pages[String(route.page)]?.label || ""}`}</div>
+        <div class="reading-meta">${review ? `Review · ${review.index + 1} of ${review.queue.length}` : ""}</div>
         <div class="top-actions">
-          <button class="icon-btn ${pageBookmarked ? "active" : ""}" data-action="toggle-page-bookmark" aria-label="Toggle page bookmark">${icons.bookmark}</button>
+          <button class="icon-btn ${pageBookmarked ? "active" : ""} bookmark-btn" data-action="toggle-page-bookmark" aria-label="Toggle page bookmark">${icons.bookmark}</button>
           ${renderHelpButton()}
           <button class="icon-btn" data-action="settings" data-dev-mode-trigger aria-label="Settings">${icons.settings}</button>
         </div>
       </header>
       <section class="page-shell ${route.page % 2 ? "odd" : "even"}" aria-label="Mushaf page ${route.page}">
+        ${renderPageChrome(route.page)}
         <div class="page-track" data-track-direction="${trackState.direction || ""}">
           ${renderPageSlot(trackPages.next, pageNumbers.next, "next", true)}
           ${renderPageSlot(trackPages.current, route.page, "current", false, activeTarget)}
@@ -512,6 +513,36 @@ function renderReading() {
       ${review ? renderReviewBar() : ""}
     </main>
   `;
+}
+
+function renderPageChrome(page) {
+  const pageData = metadata.pages[String(page)] || {};
+  return `
+    <div class="page-chrome page-top-meta" aria-label="Page metadata">
+      <span class="page-meta-surah">${escapeHtml(getPagePrimarySurahName(pageData))}</span>
+      <span class="page-meta-range">${escapeHtml(formatPageAyahRange(pageData.ayahKeys))}</span>
+      <span class="page-meta-juz">Juz ${pageData.juz || ""}</span>
+    </div>
+    <div class="page-chrome page-bottom-wrap" aria-hidden="true">
+      <div class="page-bottom-meta">${page}</div>
+    </div>
+  `;
+}
+
+function getPagePrimarySurahName(pageData) {
+  const firstKey = pageData.ayahKeys?.[0] || "";
+  const firstSurah = Number(firstKey.split(":")[0]) || pageData.surahsPresent?.[0] || 1;
+  const surah = metadata.surahs?.find((entry) => entry.number === firstSurah);
+  return surah?.transliteratedName || surah?.englishName || `Surah ${firstSurah}`;
+}
+
+function formatPageAyahRange(ayahKeys = []) {
+  const first = ayahKeys[0];
+  const last = ayahKeys[ayahKeys.length - 1] || first;
+  if (!first || !last) return "";
+  const [firstSurah, firstAyah] = first.split(":");
+  const [lastSurah, lastAyah] = last.split(":");
+  return `${firstSurah} : ${firstAyah} - ${lastSurah} : ${lastAyah}`;
 }
 
 const helpSlides = [
@@ -856,7 +887,10 @@ function renderDetails() {
                   </div>
                   <div class="detail-count-row">
                     ${renderCountValue(detail.transitionOnly.count, detail.transitionOnly.target)}
-                    <button class="detail-mini-action secondary-btn" data-action="decrement-detail" aria-label="Decrease transition count">-</button>
+                    <div class="detail-count-actions">
+                      <button class="detail-mini-action secondary-btn" data-action="decrement-detail" aria-label="Decrease transition count">-</button>
+                      <button class="detail-mini-action secondary-btn" data-action="increment-detail" aria-label="Increase transition count">+</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -877,7 +911,10 @@ function renderDetails() {
             </div>
             <div class="detail-count-row">
               ${renderCountValue(detail.transition.count, detail.transition.target)}
-              <button class="detail-mini-action secondary-btn" data-action="decrement-transition-detail" aria-label="Decrease transition count">-</button>
+              <div class="detail-count-actions">
+                <button class="detail-mini-action secondary-btn" data-action="decrement-transition-detail" aria-label="Decrease transition count">-</button>
+                <button class="detail-mini-action secondary-btn" data-action="increment-transition-detail" aria-label="Increase transition count">+</button>
+              </div>
             </div>
             <strong class="detail-transition-path">${detail.transition.path}</strong>
           </div>
@@ -898,7 +935,7 @@ function renderDetails() {
         <header class="modal-head">
           <strong>${detail.title}</strong>
           <div class="detail-head-actions">
-            <button class="icon-btn small ${detail.bookmarked ? "active" : ""}" data-action="toggle-ayah-bookmark" aria-label="${detail.headerBookmarkLabel}">${icons.bookmark}</button>
+            <button class="icon-btn small bookmark-btn ${detail.bookmarked ? "active" : ""}" data-action="toggle-ayah-bookmark" aria-label="${detail.headerBookmarkLabel}">${icons.bookmark}</button>
             <button class="icon-btn small" data-action="close-modal" aria-label="Close">${icons.close}</button>
           </div>
         </header>
@@ -911,7 +948,10 @@ function renderDetails() {
                 </div>
                 <div class="detail-count-row">
                   ${renderCountValue(detail.ayah.count, detail.ayah.target)}
-                  <button class="detail-mini-action secondary-btn" data-action="decrement-repetition-detail" aria-label="Decrease repetition count">-</button>
+                  <div class="detail-count-actions">
+                    <button class="detail-mini-action secondary-btn" data-action="decrement-repetition-detail" aria-label="Decrease repetition count">-</button>
+                    <button class="detail-mini-action secondary-btn" data-action="increment-repetition-detail" aria-label="Increase repetition count">+</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1084,11 +1124,11 @@ function renderBulkFillWheel({ key, value, min, max, label }) {
       aria-valuemax="${max}"
       aria-valuenow="${value}"
     >
-      <button class="bulk-fill-wheel-hit top" type="button" data-bulk-fill-step="${key}" data-direction="-1" aria-hidden="true" tabindex="-1"></button>
+      <div class="bulk-fill-wheel-hit top" aria-hidden="true"></div>
       <div class="bulk-fill-wheel-value ghost" data-bulk-fill-previous>${previous}</div>
       <div class="bulk-fill-wheel-value active" data-bulk-fill-current>${value}</div>
       <div class="bulk-fill-wheel-value ghost" data-bulk-fill-next>${next}</div>
-      <button class="bulk-fill-wheel-hit bottom" type="button" data-bulk-fill-step="${key}" data-direction="1" aria-hidden="true" tabindex="-1"></button>
+      <div class="bulk-fill-wheel-hit bottom" aria-hidden="true"></div>
     </div>
   `;
 }
@@ -1165,9 +1205,6 @@ function bindScreenEvents() {
     const handler = () => updateBulkFillField(field.dataset.bulkFillField, field.value);
     field.addEventListener("input", handler);
     field.addEventListener("change", handler);
-  });
-  app.querySelectorAll("[data-bulk-fill-step]").forEach((button) => {
-    button.addEventListener("click", () => stepBulkFillField(button.dataset.bulkFillStep, Number(button.dataset.direction)));
   });
   app.querySelectorAll("[data-bulk-fill-wheel]").forEach((wheel) => bindBulkFillWheel(wheel));
 
@@ -1369,8 +1406,11 @@ async function handleAction(event, el) {
   if (action === "toggle-page-bookmark") togglePageBookmark();
   if (action === "undo") undoLast();
   if (action === "decrement-detail") mutateDetail(-1);
+  if (action === "increment-detail") mutateDetail(1);
   if (action === "decrement-repetition-detail") mutateSpecificDetail("ayah", -1);
+  if (action === "increment-repetition-detail") mutateSpecificDetail("ayah", 1);
   if (action === "decrement-transition-detail") mutateSpecificDetail("transition", -1);
+  if (action === "increment-transition-detail") mutateSpecificDetail("transition", 1);
   if (action === "reset-detail") resetDetail();
   if (action === "toggle-ayah-bookmark") toggleAyahBookmark();
   if (action === "start-review") startReview();
@@ -1382,7 +1422,7 @@ async function handleAction(event, el) {
   if (action === "seed-test-data") seedTestData();
   if (action === "restore-test-data") restoreSeedBackup();
   if (action === "reset-all") resetAll();
-  if (!["previous-page", "next-page", "decrement-repetition-detail", "decrement-transition-detail"].includes(action)) render();
+  if (!["previous-page", "next-page", "decrement-repetition-detail", "increment-repetition-detail", "decrement-transition-detail", "increment-transition-detail"].includes(action)) render();
 }
 
 async function openHelp() {
@@ -1546,50 +1586,98 @@ function stepBulkFillField(key, direction) {
   if (!bulkFillForm || !direction) return;
   if (key === "startAyah" || key === "endAyah") {
     updateBulkFillField(key, bulkFillForm[key] + direction);
-    render();
+    syncBulkFillWheel(key);
     return;
   }
   if (key === "repetitionCount" || key === "transitionCount") {
     updateBulkFillField(key, bulkFillForm[key] + direction);
-    render();
+    syncBulkFillWheel(key);
   }
+}
+
+function syncBulkFillWheel(key) {
+  if (!bulkFillForm) return;
+  const wheel = app.querySelector(`[data-bulk-fill-wheel="${key}"]`);
+  if (!wheel) return;
+
+  const min = key === "startAyah" || key === "endAyah" ? 1 : 0;
+  const max = key === "startAyah" || key === "endAyah"
+    ? getBulkFillVerseMax(bulkFillForm.surahNumber)
+    : 40;
+  const value = key === "startAyah" || key === "endAyah"
+    ? clampBulkFillAyah(bulkFillForm[key], bulkFillForm.surahNumber)
+    : clampBulkFillCount(bulkFillForm[key]);
+  const previous = value > min ? value - 1 : "";
+  const next = value < max ? value + 1 : "";
+
+  wheel.dataset.min = String(min);
+  wheel.dataset.max = String(max);
+  wheel.setAttribute("aria-valuemin", String(min));
+  wheel.setAttribute("aria-valuemax", String(max));
+  wheel.setAttribute("aria-valuenow", String(value));
+
+  const previousEl = wheel.querySelector("[data-bulk-fill-previous]");
+  const currentEl = wheel.querySelector("[data-bulk-fill-current]");
+  const nextEl = wheel.querySelector("[data-bulk-fill-next]");
+  if (previousEl) previousEl.textContent = String(previous);
+  if (currentEl) currentEl.textContent = String(value);
+  if (nextEl) nextEl.textContent = String(next);
 }
 
 function bindBulkFillWheel(wheel) {
   let pointerY = null;
+  let dragCarry = 0;
+  let dragDistance = 0;
+  let suppressClick = false;
+  const dragStepPx = 18;
+  const clickZoneRatio = 0.34;
 
   wheel.addEventListener("wheel", (event) => {
     event.preventDefault();
-    stepBulkFillField(wheel.dataset.bulkFillWheel, event.deltaY > 0 ? 1 : -1);
+    stepBulkFillField(wheel.dataset.bulkFillWheel, event.deltaY > 0 ? -1 : 1);
   }, { passive: false });
 
   wheel.addEventListener("keydown", (event) => {
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      stepBulkFillField(wheel.dataset.bulkFillWheel, -1);
+      stepBulkFillField(wheel.dataset.bulkFillWheel, 1);
     }
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      stepBulkFillField(wheel.dataset.bulkFillWheel, 1);
+      stepBulkFillField(wheel.dataset.bulkFillWheel, -1);
     }
   });
 
   wheel.addEventListener("pointerdown", (event) => {
     pointerY = event.clientY;
+    dragCarry = 0;
+    dragDistance = 0;
+    suppressClick = false;
     wheel.setPointerCapture?.(event.pointerId);
   });
 
   wheel.addEventListener("pointermove", (event) => {
     if (pointerY == null) return;
-    const delta = event.clientY - pointerY;
-    if (Math.abs(delta) < 22) return;
-    stepBulkFillField(wheel.dataset.bulkFillWheel, delta > 0 ? 1 : -1);
+    const delta = pointerY - event.clientY;
+    dragDistance += Math.abs(delta);
+    if (dragDistance >= 6) suppressClick = true;
+    dragCarry += delta;
+    const steps = dragCarry > 0
+      ? Math.floor(dragCarry / dragStepPx)
+      : Math.ceil(dragCarry / dragStepPx);
+    if (!steps) {
+      pointerY = event.clientY;
+      return;
+    }
+    stepBulkFillField(wheel.dataset.bulkFillWheel, steps);
+    dragCarry -= steps * dragStepPx;
     pointerY = event.clientY;
   });
 
   const finishPointer = (event) => {
     if (pointerY == null) return;
     pointerY = null;
+    dragCarry = 0;
     if (wheel.hasPointerCapture?.(event.pointerId)) {
       wheel.releasePointerCapture(event.pointerId);
     }
@@ -1597,6 +1685,23 @@ function bindBulkFillWheel(wheel) {
 
   wheel.addEventListener("pointerup", finishPointer);
   wheel.addEventListener("pointercancel", finishPointer);
+  wheel.addEventListener("click", (event) => {
+    if (suppressClick) {
+      event.preventDefault();
+      event.stopPropagation();
+      suppressClick = false;
+      return;
+    }
+    const rect = wheel.getBoundingClientRect();
+    const offsetY = event.clientY - rect.top;
+    if (offsetY <= rect.height * clickZoneRatio) {
+      stepBulkFillField(wheel.dataset.bulkFillWheel, 1);
+      return;
+    }
+    if (offsetY >= rect.height * (1 - clickZoneRatio)) {
+      stepBulkFillField(wheel.dataset.bulkFillWheel, -1);
+    }
+  });
 }
 
 function openBulkFill() {
@@ -1778,7 +1883,7 @@ function playCountIncreaseTone(context, config) {
 }
 
 function spawnRepetitionCountPop(marker, count, container) {
-  const rect = marker.getBoundingClientRect();
+  const rect = getAyahMarkerVisualRect(marker);
   const pop = document.createElement("span");
   pop.className = "repetition-count-pop";
   pop.textContent = String(count);
@@ -1787,6 +1892,10 @@ function spawnRepetitionCountPop(marker, count, container) {
   pop.style.top = `${rect.top}px`;
   container.append(pop);
   pop.addEventListener("animationend", () => pop.remove(), { once: true });
+}
+
+function getAyahMarkerVisualRect(marker) {
+  return marker.querySelector?.(".ayah-mark-glyph")?.getBoundingClientRect?.() || marker.getBoundingClientRect();
 }
 
 function addEvent(type, payload) {

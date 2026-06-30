@@ -77,6 +77,28 @@ test("buildRepetitionRingState flags ayahs with mastered repetition and transiti
   );
 });
 
+test("buildRepetitionRingState flags final ayahs as fully mastered when repetition is mastered", () => {
+  assert.equal(
+    buildRepetitionRingState({
+      repetitionCount: 40,
+      transitionCount: null,
+      repetitionThresholds,
+      transitionCountThresholds
+    }).isFullyMastered,
+    true
+  );
+
+  assert.equal(
+    buildRepetitionRingState({
+      repetitionCount: 39,
+      transitionCount: null,
+      repetitionThresholds,
+      transitionCountThresholds
+    }).isFullyMastered,
+    false
+  );
+});
+
 test("buildRepetitionRingState maps transition count into underline progress", () => {
   assert.equal(
     buildRepetitionRingState({

@@ -120,6 +120,7 @@ test("reading page exposes a bulk-fill action button and modal wiring", () => {
   assert.match(appSource, /function renderBulkFillWheel\(/);
   assert.match(appSource, /function renderBulkFillPickerMenu\(/);
   assert.match(appSource, /function stepBulkFillField\(/);
+  assert.match(appSource, /function syncBulkFillWheel\(/);
   assert.match(appSource, /function bindBulkFillWheel\(/);
   assert.match(appSource, /function toggleBulkFillPicker\(/);
   assert.match(appSource, /function selectBulkFillPicker\(/);
@@ -132,8 +133,16 @@ test("reading page exposes a bulk-fill action button and modal wiring", () => {
   assert.match(appSource, /data-bulk-fill-wheel="\$\{key\}"/);
   assert.match(appSource, /data-action="toggle-bulk-fill-picker"/);
   assert.match(appSource, /data-action="select-bulk-fill-picker"/);
+  assert.doesNotMatch(appSource, /data-bulk-fill-step=/);
   assert.match(appSource, /if \(key === "startAyah" \|\| key === "endAyah"\) \{/);
+  assert.match(appSource, /syncBulkFillWheel\(key\);/);
   assert.match(appSource, /clampBulkFillAyah\(value, bulkFillForm\.surahNumber\)/);
+  assert.match(appSource, /event\.deltaY > 0 \? -1 : 1/);
+  assert.match(appSource, /event\.key === "ArrowUp"[\s\S]*stepBulkFillField\(wheel\.dataset\.bulkFillWheel, 1\);/);
+  assert.match(appSource, /event\.key === "ArrowDown"[\s\S]*stepBulkFillField\(wheel\.dataset\.bulkFillWheel, -1\);/);
+  assert.match(appSource, /dragDistance >= 6/);
+  assert.match(appSource, /offsetY <= rect\.height \* clickZoneRatio[\s\S]*stepBulkFillField\(wheel\.dataset\.bulkFillWheel, 1\);/);
+  assert.match(appSource, /offsetY >= rect\.height \* \(1 - clickZoneRatio\)[\s\S]*stepBulkFillField\(wheel\.dataset\.bulkFillWheel, -1\);/);
   assert.match(appSource, /if \(action === "open-bulk-fill"\) openBulkFill\(\);/);
   assert.match(appSource, /if \(action === "toggle-bulk-fill-picker"\) toggleBulkFillPicker\(el\.dataset\.picker\);/);
   assert.match(appSource, /if \(action === "select-bulk-fill-picker"\) selectBulkFillPicker\(el\.dataset\.picker, el\.dataset\.value\);/);
@@ -148,6 +157,7 @@ test("bulk-fill button styling keeps the action fixed off the page navigation bu
   assert.match(stylesSource, /bottom:\s*82px/);
   assert.match(stylesSource, /\.reader-bulk-fill-btn\.with-review/);
   assert.match(stylesSource, /\.bulk-fill-wheel/);
+  assert.match(stylesSource, /\.bulk-fill-wheel-hit[\s\S]*pointer-events:\s*none/);
   assert.match(stylesSource, /\.bulk-fill-picker-menu/);
   assert.match(stylesSource, /\.bulk-fill-picker-option\.selected/);
 });

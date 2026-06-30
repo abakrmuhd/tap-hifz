@@ -1,7 +1,7 @@
 import { isLocalhostHostname } from "./data/runtime-environment.js";
 
 const app = document.querySelector("#app");
-const STARTUP_ASSET_VERSION = "2026-06-30-glyph-shine-overlay";
+const STARTUP_ASSET_VERSION = "2026-07-01-transition-metadata";
 
 function escapeHtml(text) {
   return String(text).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]);

@@ -44,6 +44,12 @@ test("long press detail modal cancels active page swipe gesture", () => {
   assert.match(appSource, /function openAyahDetail\(button\)\s*\{[\s\S]*?clearPendingTap\(\);[\s\S]*?cancelPageGesture\(\);[\s\S]*?detailTarget = \{ kind: "ayah"/);
 });
 
+test("detail modal exposes increment buttons beside repetition and transition decrements", () => {
+  assert.match(appSource, /data-action="decrement-detail"[\s\S]*aria-label="Decrease transition count">-<\/button>[\s\S]*data-action="increment-detail"[\s\S]*aria-label="Increase transition count">\+<\/button>/);
+  assert.match(appSource, /data-action="decrement-transition-detail"[\s\S]*aria-label="Decrease transition count">-<\/button>[\s\S]*data-action="increment-transition-detail"[\s\S]*aria-label="Increase transition count">\+<\/button>/);
+  assert.match(appSource, /data-action="decrement-repetition-detail"[\s\S]*aria-label="Decrease repetition count">-<\/button>[\s\S]*data-action="increment-repetition-detail"[\s\S]*aria-label="Increase repetition count">\+<\/button>/);
+});
+
 test("quick ayah taps cancel long press even after page shell captures the pointer", () => {
   assert.match(appSource, /function bindLongPress\(el,\s*callback\)\s*\{[\s\S]*?document\.addEventListener\("pointerup",\s*clearMatchingPointer,\s*true\)/);
   assert.match(appSource, /function bindLongPress\(el,\s*callback\)\s*\{[\s\S]*?if \(nextEvent\.pointerId === pointerId\) clear\(\);/);
@@ -69,7 +75,9 @@ test("margin swipes suppress text selection before drag threshold", () => {
 
 test("ayah feedback animations stay visible in the app preview", () => {
   assert.match(styles, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.pulse[\s\S]*animation-duration:\s*\.42s\s*!important/);
-  assert.match(styles, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.repetition-count-pop[\s\S]*animation-duration:\s*\.68s\s*!important/);
+  assert.match(styles, /\.repetition-count-pop\s*\{[\s\S]*animation:\s*repetition-count-pop 2\.36s/);
+  assert.match(styles, /@keyframes repetition-count-pop[\s\S]*7\.6%,\s*50%\s*\{[\s\S]*opacity:\s*1;[\s\S]*translate\(-50%,\s*-78%\) scale\(1\)/);
+  assert.match(styles, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.repetition-count-pop[\s\S]*animation-duration:\s*2\.36s\s*!important/);
 });
 
 test("ayah pulse can replay on repeated taps", () => {
@@ -81,6 +89,11 @@ test("ayah feedback pop is positioned in an app overlay outside the marker", () 
   assert.match(appSource, /getBoundingClientRect\(\)/);
   assert.match(appSource, /container\.append\(pop\)/);
   assert.match(styles, /\.repetition-count-pop[\s\S]*position:\s*fixed/);
+});
+
+test("ayah feedback pop centers on the visual ayah glyph", () => {
+  assert.match(appSource, /const rect = getAyahMarkerVisualRect\(marker\)/);
+  assert.match(appSource, /function getAyahMarkerVisualRect\(marker\)\s*\{[\s\S]*marker\.querySelector\?\.\("\.ayah-mark-glyph"\)\?\.getBoundingClientRect\?\.\(\)/);
 });
 
 test("page navigation click binding excludes ayah marker buttons", () => {
@@ -98,6 +111,22 @@ test("reader exposes bottom previous and next buttons for desktop navigation", (
   assert.doesNotMatch(appSource, />Next page<\/button>/);
   assert.match(styles, /\.reader-bottom-nav/);
   assert.match(styles, /\.reader-bottom-btn/);
+});
+
+test("reader moves page metadata into side-line-safe page chrome", () => {
+  assert.match(appSource, /function renderPageChrome\(page\)/);
+  assert.match(appSource, /renderPageChrome\(route\.page\)/);
+  assert.match(appSource, /class="page-chrome page-top-meta"/);
+  assert.match(appSource, /class="page-meta-surah"/);
+  assert.match(appSource, /class="page-meta-range"/);
+  assert.match(appSource, /class="page-meta-juz"/);
+  assert.match(appSource, /class="page-bottom-meta">\$\{page\}<\/div>/);
+  assert.match(appSource, /formatPageAyahRange\(pageData\.ayahKeys\)/);
+  assert.match(appSource, /getPagePrimarySurahName\(pageData\)/);
+  assert.doesNotMatch(appSource, /`Page \$\{route\.page\} Â· \$\{metadata\.pages\[String\(route\.page\)\]\?\.label \|\| ""\}`/);
+  assert.match(styles, /\.page-chrome\s*\{[\s\S]*pointer-events:\s*none/);
+  assert.match(styles, /\.page-shell\.odd\s*\{[\s\S]*--page-chrome-right:\s*40px/);
+  assert.match(styles, /\.page-shell\.even\s*\{[\s\S]*--page-chrome-left:\s*40px/);
 });
 
 test("reader no longer renders the swipe hint copy", () => {
@@ -123,6 +152,9 @@ test("transition underline renders as a centered source-ayah cue", () => {
   assert.match(styles, /--transition-progress:\s*0%/);
   assert.match(styles, /\.ayah-mark::before\s*\{[\s\S]*background:\s*linear-gradient\(90deg,\s*transparent,\s*color-mix\(in srgb,\s*var\(--text\) 34%,\s*transparent\)/);
   assert.match(styles, /\.ayah-mark::after\s*\{[\s\S]*inset-inline:\s*-\.16em/);
+  assert.match(styles, /\.ayah-chars\s+\.ayah-marker\.ayah-mark\s*\{[\s\S]*--ayah-marker-visual-offset:\s*\.2em/);
+  assert.match(styles, /\.ayah-chars\s+\.ayah-marker\.ayah-mark::before,[\s\S]*\.ayah-chars\s+\.ayah-marker\.ayah-mark::after\s*\{[\s\S]*transform:\s*translateX\(var\(--ayah-marker-visual-offset\)\)/);
+  assert.match(styles, /\.ayah-chars\s+\.ayah-marker\.ayah-mark\s+\.ayah-mark-glyph\s*\{[\s\S]*transform:\s*translateX\(var\(--ayah-marker-visual-offset\)\)/);
   assert.match(styles, /clip-path:\s*inset\(0 var\(--transition-clip\)\)/);
   assert.match(styles, /linear-gradient\(90deg,\s*transparent,\s*var\(--transition-color\)[\s\S]*transparent\)/);
   assert.doesNotMatch(styles, /\.ayah-mark::after\s*\{[\s\S]*z-index:\s*-1/);

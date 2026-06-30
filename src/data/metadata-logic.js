@@ -34,7 +34,6 @@ export function buildMetadataFromPages(pageMap, juzRanges) {
     }
 
     const uniqueAyahKeys = [...new Set(ayahKeys)];
-    const transitionKeys = uniqueAyahKeys.slice(1).map((key, index) => `${page}|${uniqueAyahKeys[index]}|${key}`);
     const labelLine = (pageData.lines || []).find((line) => line.verseRange);
 
     pages[String(page)] = {
@@ -42,9 +41,19 @@ export function buildMetadataFromPages(pageMap, juzRanges) {
       surahsPresent: [...surahsPresent].sort((a, b) => a - b),
       juz: juzRanges.find((item) => page >= item.startPage && page <= item.endPage)?.number ?? 1,
       ayahKeys: uniqueAyahKeys,
-      transitionKeys
+      transitionKeys: []
     };
   }
+
+  const allAyahKeys = Object.entries(pages)
+    .sort(([a], [b]) => Number(a) - Number(b))
+    .flatMap(([, pageData]) => pageData.ayahKeys || []);
+  allAyahKeys.forEach((key, index) => {
+    const next = allAyahKeys[index + 1];
+    if (!next || next.split(":")[0] !== key.split(":")[0]) return;
+    const page = ayahToPage[key];
+    pages[String(page)]?.transitionKeys.push(`${page}|${key}|${next}`);
+  });
 
   return {
     pages,

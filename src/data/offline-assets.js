@@ -1,12 +1,12 @@
-export const CACHE_VERSION = "hifz-trackr-v62-glyph-shine-overlay";
+export const CACHE_VERSION = "hifz-trackr-v72-transition-metadata";
 
 export const SHELL_ASSETS = [
   "/",
   "/index.html",
   "/manifest.webmanifest",
   "/icon.svg",
-  "/src/app.js?v=2026-06-30-glyph-shine-overlay",
-  "/src/styles.css?v=2026-06-30-glyph-shine-overlay"
+  "/src/app.js?v=2026-07-01-transition-metadata",
+  "/src/styles.css?v=2026-07-01-transition-metadata"
 ];
 
 export const DATA_ASSETS = [

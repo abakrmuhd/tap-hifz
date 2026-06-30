@@ -140,6 +140,12 @@ test("styles define Muhaffidh-like QCF4 page metrics", () => {
   assert.match(styles, /\.page-shell\s*\{[\s\S]*cursor:\s*grab/);
   assert.match(styles, /\.page-slot\.current\s+\.ayah-marker\[data-ayah\][\s\S]*cursor:\s*pointer/);
   assert.match(styles, /\.page-shell\.dragging\s+\.ayah-marker\[data-ayah\][\s\S]*cursor:\s*grabbing/);
+  const qcfAyahMarkerRule = styles.match(/\.ayah-chars\s+\.ayah-marker\.ayah-mark\s*\{[^}]*\}/)?.[0] || "";
+  assert.match(qcfAyahMarkerRule, /--ayah-marker-visual-offset:\s*\.2em/);
+  const qcfAyahGlyphRule = styles.match(/\.ayah-chars\s+\.ayah-marker\.ayah-mark\s+\.ayah-mark-glyph\s*\{[^}]*\}/)?.[0] || "";
+  assert.match(qcfAyahGlyphRule, /transform:\s*translateX\(var\(--ayah-marker-visual-offset\)\)/);
+  const qcfTransitionCueRule = styles.match(/\.ayah-chars\s+\.ayah-marker\.ayah-mark::before,\s*\.ayah-chars\s+\.ayah-marker\.ayah-mark::after\s*\{[^}]*\}/)?.[0] || "";
+  assert.match(qcfTransitionCueRule, /transform:\s*translateX\(var\(--ayah-marker-visual-offset\)\)/);
   const surahTitleLineRule = styles.match(/\.ayah-chars\s+\.surah-title-line\s*\{[^}]*\}/)?.[0] || "";
   assert.match(surahTitleLineRule, /border:\s*1px\s+solid\s+var\(--mastered\)/);
   assert.match(surahTitleLineRule, /border-radius:\s*12px/);

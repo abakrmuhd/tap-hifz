@@ -39,12 +39,49 @@ const samplePages = {
   }
 };
 
+const sameSurahAcrossPages = {
+  3: {
+    lines: [
+      {
+        type: "text",
+        verseRange: "2:15-2:16",
+        words: [
+          { location: "2:15:1", word: `Word ${"\u0661\u0665"}` },
+          { location: "2:16:1", word: `Word ${"\u0661\u0666"}` }
+        ]
+      }
+    ]
+  },
+  4: {
+    lines: [
+      {
+        type: "text",
+        verseRange: "2:17-3:1",
+        words: [
+          { location: "2:17:1", word: `Word ${"\u0661\u0667"}` },
+          { location: "3:1:1", word: `Word ${"\u0661"}` }
+        ]
+      }
+    ]
+  }
+};
+
 test("buildMetadataFromPages maps ayahs and transitions to exact pages", () => {
   const metadata = buildMetadataFromPages(samplePages, juzRanges);
 
   assert.deepEqual(metadata.pages["1"].ayahKeys, ["1:1", "1:2"]);
   assert.deepEqual(metadata.pages["1"].transitionKeys, ["1|1:1|1:2"]);
   assert.equal(metadata.ayahToPage["2:2"], 2);
+});
+
+test("buildMetadataFromPages keeps only outgoing same-surah transition requirements", () => {
+  const metadata = buildMetadataFromPages(sameSurahAcrossPages, [{ number: 1, startPage: 3, endPage: 4 }]);
+
+  assert.deepEqual(metadata.pages["3"].transitionKeys, [
+    "3|2:15|2:16",
+    "3|2:16|2:17"
+  ]);
+  assert.deepEqual(metadata.pages["4"].transitionKeys, []);
 });
 
 test("getPageRepetitionLevel only uses ayahs that belong to the requested page", () => {
@@ -146,6 +183,45 @@ test("getPageRangeCellProgressState only masters when all page requirements are 
       },
       repetitionThresholds: thresholds,
       transitionCountThresholds: thresholds
+    }),
+    { empty: false, progress: 1 }
+  );
+});
+
+test("page and range progress do not require a transition after a final ayah", () => {
+  const metadata = buildMetadataFromPages({
+    604: {
+      lines: [
+        {
+          type: "text",
+          verseRange: "114:6-114:6",
+          words: [{ location: "114:6:1", word: `Word ${"\u0666"}` }]
+        }
+      ]
+    }
+  }, [{ number: 30, startPage: 604, endPage: 604 }]);
+  const thresholds = { weakMax: 9, buildingMax: 19, strongMax: 39 };
+  const progressOptions = {
+    metadata,
+    ayahProgress: { "114:6": { repetitionCount: 40 } },
+    transitionProgress: {},
+    repetitionThresholds: thresholds,
+    transitionCountThresholds: thresholds
+  };
+
+  assert.deepEqual(metadata.pages["604"].transitionKeys, []);
+  assert.deepEqual(
+    getPageCellProgressState({
+      page: 604,
+      ...progressOptions
+    }),
+    { empty: false, progress: 1 }
+  );
+  assert.deepEqual(
+    getPageRangeCellProgressState({
+      startPage: 604,
+      endPage: 604,
+      ...progressOptions
     }),
     { empty: false, progress: 1 }
   );
